@@ -12,16 +12,16 @@
   <title>Login Page 2 | Creative - Bootstrap 3 Responsive Admin Template</title>
 
   <!-- Bootstrap CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
   <!-- bootstrap theme -->
-  <link href="css/bootstrap-theme.css" rel="stylesheet">
+  <link href="../css/bootstrap-theme.css" rel="stylesheet">
   <!--external css-->
   <!-- font icon -->
-  <link href="css/elegant-icons-style.css" rel="stylesheet" />
-  <link href="css/font-awesome.css" rel="stylesheet" />
+  <link href="../css/elegant-icons-style.css" rel="stylesheet" />
+  <link href="../css/font-awesome.min.css" rel="stylesheet" />
   <!-- Custom styles -->
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/style-responsive.css" rel="stylesheet" />
+  <link href="../css/style.css" rel="stylesheet">
+  <link href="../css/style-responsive.css" rel="stylesheet" />
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
@@ -41,24 +41,27 @@
 
   <div class="container">
 
-    <form class="login-form" action="index.html">
+    <form class="login-form" onsubmit="return login()">
       <div class="login-wrap">
         <p class="login-img"><i class="icon_lock_alt"></i></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="icon_profile"></i></span>
-          <input type="text" class="form-control" placeholder="Username" autofocus>
+          <input type="text" class="form-control" placeholder="Usuario" autofocus id="usuario">
         </div>
         <div class="input-group">
           <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Contraseña" id="contrasena">
         </div>
-        <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
+        <!--<label class="checkbox">
                 <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
-            </label>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-        <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>
+            </label>-->
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Iniciar Sesión</button>
       </div>
+        <div align="center">
+        <label class="checkbox">
+                <span class=""> <a href="../index.html"> Regresar a la página principal</a></span>
+            </label>
+        </div>
     </form>
     <div class="text-right">
       <div class="credits">
@@ -72,8 +75,77 @@
         </div>
     </div>
   </div>
-
+<!-- container section end -->
+  <!-- javascripts -->
+  <script src="../js/jquery.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <!-- nice scroll -->
+  <script src="../js/jquery.scrollTo.min.js"></script>
+  <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+  <!--custome script for all page-->
+  <script src="../js/scripts.js"></script>
+  <script src="../js/gestion_cuenta.js"></script>
 
 </body>
 
 </html>
+
+<script>
+    function login(){
+        var exito = false;
+			//console.log("dentro de login");
+			var user = document.getElementById('usuario').value;
+			var password = document.getElementById('contrasena').value;
+			//alert(usr);
+			var dataForm = new FormData();
+		  dataForm.append('user',user);
+			dataForm.append('pass',password);
+		  var pagina = "../controller/login.php";
+		  $.ajax({
+		    contentType: false,
+		    processData: false,
+		      // la URL para la petición
+		      url : pagina,
+		      // la información a enviar
+		      // (también es posible utilizar una cadena de datos)
+		      data : dataForm,
+		      // especifica si será una petición POST o GET
+		      type : 'POST',
+		      // el tipo de información que se espera de respuesta
+		      dataType : 'json',
+		      // código a ejecutar si la petición es satisfactoria;
+		      // la respuesta es pasada como argumento a la función
+		      success : function(json) {
+		        //console.log(json);
+		        if(json['exito']==true){
+							//location.href ="vistas/principal_usuario.html";
+				    //alert("Login exitoso");
+                    //alert(json["categoria"]);
+                    if(json["categoria"]==1){
+                        location.href ="RegistroEscolarPadres.html";
+                    }else if(json["categoria"]==2){
+                        location.href ="RegistroEscolarProfesor.html";
+                    }else if(json["categoria"]==3){
+                        location.href ="CursosAdministrador.html";
+                    }else{
+                        
+                    }
+		        }else{
+							alert(json['error']);
+		          //document.getElementById('texto_tabla').innerHTML = json['error'];
+		        }
+		      },
+		      error : function(xhr, status) {
+						alert("Existió un error en el servidor...");
+		      },
+		      // código a ejecutar sin importar si la petición falló o no
+		      complete : function(xhr, status) {
+		          //alert('Petición realizada');
+		      }
+		  });//*/
+			return (exito?true:false);
+    }
+    
+    
+</script>
+

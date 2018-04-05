@@ -1,3 +1,4 @@
 function salir() {
-        alert("salida");
+        //alert("salida");
+        window.location.href ="../controller/cerrar_sesion.php";
     }
