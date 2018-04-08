@@ -78,7 +78,7 @@
         <ul class="sidebar-menu">
           <li class="">
             <a class="" href="CursosAdministrador.html">
-                          <i class="icon_house_alt"></i>
+                          <i class="icon_pens"></i>
                           <span>Cursos</span>
                       </a>
           </li>
@@ -90,25 +90,25 @@
           </li>
           <li class="sub-menu">
             <a href="AvisosAdministrador.html" class="">
-                          <i class="icon_desktop"></i>
+                          <i class="icon_info_alt"></i>
                           <span>Avisos</span>
                       </a>
           </li>
           <li>
             <a class="" href="UsuariosAdministrador.html">
-                          <i class="icon_genius"></i>
+                          <i class="icon_profile"></i>
                           <span>Usuarios</span>
                       </a>
           </li>
           <li>
             <a class="" href="GruposAdministrador.html">
-                          <i class="icon_piechart"></i>
+                          <i class="icon_group"></i>
                           <span>Grupos</span>
                       </a>
           </li>
           <li class="sub-menu">
             <a onclick="salir()" href="#" class="">
-                          <i class="icon_table"></i>
+                          <i class="icon_close_alt2"></i>
                           <span>Salir</span>
                       </a>
           </li>
@@ -140,43 +140,120 @@
               </header>
               <div class="panel-body">
                 <div class="form">
-                  <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+                  <div class="form-validate form-horizontal" id="feedback_form" method="get" action="">
                       
                     <div class="form-group ">
                       <label for="cname" class="control-label col-lg-2">Título <span class="required">*</span></label>
                       <div class="col-lg-3">
-                        <input class="form-control" id="titulo" name="titulo" minlength="3" type="text" placeholder="Título del curso" required />
+                        <input class="form-control" id="titulo_curso" name="titulo" minlength="3" type="text" placeholder="Título del curso" required />
                       </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cname" class="control-label col-lg-2">Tipo de multimedia <span class="required">*</span></label>
+                        <div class="col-lg-2">
+                            <div class="btn-row">
+                          <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" onchange="SelectImagen()">
+                                                  <input id="input_imagen" type="radio" name="options"> Imágen
+                                              </label>
+                            <label class="btn btn-default" onchange="SelectVideo()">
+                                                  <input type="radio" name="options"id="input_video"> Vídeo
+                                              </label>
+                          </div>
+                        </div>
+                        </div>
                           <!--imagen-->
-                        <div class="col-lg-1">
+                            <div class="col-lg-1" style="display: none;" id="div_btn_imagen">
                             <button type="button" class="btn btn-info" onclick="imagen(input_imagen_titulo)" id="btn_imagen_titulo">
                             <span class="fa fa-image"></span>  Subir Imagen
                             </button>
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_titulo" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_titulo)">
-                        </div>
+                        </div> 
+                        <!--url de video -->
+                        <div class="col-lg-8" style="display: none;" id="div_input_video">
+                      <label for="cname" class="control-label col-lg-2">YouTube</label>
+                      <div class="col-lg-10">
+                        <input class="form-control" id="input_url_video" name="titulo" minlength="3" type="text" placeholder="URL del Vídeo" required />
+                      </div>
+                    </div>
                     </div>
                       
                     <div class="form-group ">
                       <label for="ccomment" class="control-label col-lg-2">Objetivo <span class="required">*</span></label>
                       <div class="col-lg-10">
-                        <textarea class="form-control " id="objetivo" name="Objetivo" required></textarea>
+                        <textarea class="form-control " id="objetivo" name="Objetivo" placeholder="Escribe aquí el objetivo de este curso" required></textarea>
                       </div>
                     </div>
                       
                     <div class="form-group ">
                       <label for="ccomment" class="control-label col-lg-2">Descripción <span class="required">*</span></label>
                       <div class="col-lg-10">
-                        <textarea class="form-control " id="descripcion" name="descripcion" rows="10" required></textarea>
+                        <textarea class="form-control " id="descripcion" name="descripcion" rows="10" placeholder="Escribe aquí toda la información del curso" required></textarea>
                       </div>
                     </div>
                       
                       
-                      <!-- ***** EJERCICIOS **** -->
+                      <!-- ***** Ejemplos **** -->
+                      <div class="form-group ">
+                      <label class="control-label col-lg-2">Ejemplo:</label>
+                    </div>
+                    
+                    <!-- *** EJEMPLO ***-->
+                    <div class="form-group ">
+                      <label for="cemail" class="control-label col-lg-2">Pregunta <span class="required">*</span></label>
+                      <div class="col-lg-8">
+                        <input class="form-control " id="ejemplo" type="text" name="Ejemplo" placeholder="Pregunta de ejemplo" required />
+                      </div>
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_ejemplo)" id="btn_imagen_ejemplo">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_ejemplo" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejemplo)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="has-success">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="r1_correcta_ejemplo" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                          </div>
+                        </div>
+                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <input class="form-control " id="r2_incorrecta_ejemplo" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                      </div>
+                    </div>
+                        
+                    <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="r3_incorrecta_ejemplo" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <input class="form-control " id="r4_incorrecta_ejemplo" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group ">
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-10">
+                        <textarea class="form-control " id="retroalimentacion_ejemplo" name="Retroalimentacion" placeholder="Escribe aquí la explicación de por qué es la respuesta correcta" required></textarea>
+                      </div>
+                    </div>
+                    
+                      
+                      <!-- ***** ======================================================================= EJERCICIOS **** -->
                       <div class="form-group ">
                       <label class="control-label col-lg-2">Area de Ejercicios:</label>
                     </div>
-                    
-                    <!-- ***PREGUNTA 1 ***-->
+                      
+                      <!-- ***PREGUNTA 1 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 1 <span class="required">*</span></label>
                       <div class="col-lg-8">
@@ -190,28 +267,50 @@
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio1" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio1)">
                         </div>
                     </div>
-                    
+                    <!-- respuesta 1 -->
                     <div class="form-group">
                         <div class="has-success">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_1" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                            <input class="form-control is-valid" id="respuesta1_p_e1" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
                           </div>
                         </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_1" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r1_e1" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
-                        
+                    <!-- respuesta 2 --> 
                     <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_1" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta2_p_e1" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_1" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r2_e1" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
+                      </div>
+                    </div>
+                    <!-- respuesta 3 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta3_p_e1" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                         <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r3_e1" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
+                      </div>
+                    </div>
+                      <!-- respuesta 4 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta4_p_e1" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                            <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r4_e1" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
                     
@@ -221,7 +320,6 @@
                       <div class="col-lg-8">
                         <input class="form-control " id="p_ejercicio_2" type="text" name="ejercicio_2" placeholder="Ejercicio 2" required />
                       </div>
-                        
                         <!--imagen-->
                         <div class="col-lg-1">
                             <button type="button" class="btn btn-info" onclick="imagen(input_imagen_ejercicio2)" id="btn_imagen_ejercicio2">
@@ -230,39 +328,60 @@
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio2" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio2)">
                         </div>
                     </div>
-                    
+                    <!-- respuesta 1 -->
                     <div class="form-group">
                         <div class="has-success">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_2" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                            <input class="form-control is-valid" id="respuesta1_p_e2" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
                           </div>
                         </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_2" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r1_e2" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
-                        
+                    <!-- respuesta 2 --> 
                     <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_2" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta2_p_e2" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_2" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r2_e2" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                    <!-- respuesta 3 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta3_p_e2" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                         <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r3_e2" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      <!-- respuesta 4 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta4_p_e2" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                            <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r4_e2" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
                       </div>
                     </div>
                     
-                    <!-- ***PREGUNTA 3 ***-->
+                      <!-- ***PREGUNTA 3 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 3 <span class="required">*</span></label>
                       <div class="col-lg-8">
                         <input class="form-control " id="p_ejercicio_3" type="text" name="ejercicio_3" placeholder="Ejercicio 3" required />
                       </div>
-                        
-                         <!--imagen-->
+                        <!--imagen-->
                         <div class="col-lg-1">
                             <button type="button" class="btn btn-info" onclick="imagen(input_imagen_ejercicio3)" id="btn_imagen_ejercicio3">
                             <span class="fa fa-image"></span>  Subir Imagen
@@ -270,39 +389,60 @@
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio3" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio3)">
                         </div>
                     </div>
-                    
+                    <!-- respuesta 1 -->
                     <div class="form-group">
                         <div class="has-success">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_3" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                            <input class="form-control is-valid" id="respuesta1_p_e3" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
                           </div>
                         </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_3" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r1_e3" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
-                        
+                    <!-- respuesta 2 --> 
                     <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_3" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta2_p_e3" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_3" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r2_e3" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
                       </div>
                     </div>
-                    
+                    <!-- respuesta 3 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta3_p_e3" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                         <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r3_e3" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      <!-- respuesta 4 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta4_p_e3" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                            <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r4_e3" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      
                     <!-- ***PREGUNTA 4 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 4 <span class="required">*</span></label>
                       <div class="col-lg-8">
                         <input class="form-control " id="p_ejercicio_4" type="text" name="ejercicio_4" placeholder="Ejercicio 4" required />
                       </div>
-                        
-                         <!--imagen-->
+                        <!--imagen-->
                         <div class="col-lg-1">
                             <button type="button" class="btn btn-info" onclick="imagen(input_imagen_ejercicio4)" id="btn_imagen_ejercicio4">
                             <span class="fa fa-image"></span>  Subir Imagen
@@ -310,39 +450,60 @@
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio4" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio4)">
                         </div>
                     </div>
-                    
+                    <!-- respuesta 1 -->
                     <div class="form-group">
                         <div class="has-success">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_4" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                            <input class="form-control is-valid" id="respuesta1_p_e4" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
                           </div>
                         </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_4" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r1_e4" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
-                        
+                    <!-- respuesta 2 --> 
                     <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_4" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta2_p_e4" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_4" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r2_e4" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
                       </div>
                     </div>
-                    
-                      <!-- ***PREGUNTA 5 ***-->
+                    <!-- respuesta 3 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta3_p_e4" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                         <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r3_e4" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      <!-- respuesta 4 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta4_p_e4" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                            <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r4_e4" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      
+                    <!-- ***PREGUNTA 5 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 5 <span class="required">*</span></label>
                       <div class="col-lg-8">
                         <input class="form-control " id="p_ejercicio_5" type="text" name="ejercicio_5" placeholder="Ejercicio 5" required />
                       </div>
-                        
-                         <!--imagen-->
+                        <!--imagen-->
                         <div class="col-lg-1">
                             <button type="button" class="btn btn-info" onclick="imagen(input_imagen_ejercicio5)" id="btn_imagen_ejercicio5">
                             <span class="fa fa-image"></span>  Subir Imagen
@@ -350,72 +511,55 @@
                             <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio5" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio5)">
                         </div>
                     </div>
-                    
+                    <!-- respuesta 1 -->
                     <div class="form-group">
                         <div class="has-success">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_5" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                            <input class="form-control is-valid" id="respuesta1_p_e5" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
                           </div>
                         </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_5" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r1_e5" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada esta respuesta." required></textarea>
                       </div>
                     </div>
-                        
+                    <!-- respuesta 2 --> 
                     <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_5" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta2_p_e5" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_5" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r2_e5" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
                       </div>
                     </div>
-                    
-                      <!-- ***PREGUNTA 6 ***-->
-                    <div class="form-group ">
-                      <label for="cemail" class="control-label col-lg-2">Pregunta 6 <span class="required">*</span></label>
-                      <div class="col-lg-8">
-                        <input class="form-control " id="p_ejercicio_6" type="text" name="ejercicio_6" placeholder="Ejercicio 6" required />
-                      </div>
-                        
-                         <!--imagen-->
-                        <div class="col-lg-1">
-                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_ejercicio6)" id="btn_imagen_ejercicio6">
-                            <span class="fa fa-image"></span>  Subir Imagen
-                            </button>
-                            <input type="file" style="display:none;" class="form-control" id="input_imagen_ejercicio6" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_ejercicio6)">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <div class="has-success">
-                          <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
-                          <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r1_correcta_ejercicios_6" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
-                          </div>
-                        </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
-                      <div class="col-lg-4">
-                        <input class="form-control " id="r2_incorrecta_ejercicios_6" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
-                      </div>
-                    </div>
-                        
-                    <div class="form-group">
+                    <!-- respuesta 3 -->
+                      <div class="form-group">
                           <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                           <div class="col-lg-4">
-                            <input class="form-control is-valid" id="r3_incorrecta_ejercicios_6" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                            <input class="form-control is-valid" id="respuesta3_p_e5" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
                           </div>
-                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                         <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r4_incorrecta_ejercicios_6" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <textarea class="form-control " id="retroalimentacion_r3_e5" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
                       </div>
                     </div>
-                    
-                    <!-- PREGUNTAS DE EVALUACIÓN -->
+                      <!-- respuesta 4 -->
+                      <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="respuesta4_p_e5" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                            <label for="ccomment" class="control-label col-lg-2">Retroalimentación <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <textarea class="form-control " id="retroalimentacion_r4_e5" name="Retroalimentacion" placeholder="Escribe aquí la retroalimentación que se mostrará cuando sea seleccionada una respuesta incorrecta." required></textarea>
+                      </div>
+                    </div>
+                      
+                      
+                    <!-- ==================================================================PREGUNTAS DE EVALUACIÓN -->
                       <div class="form-group ">
                       <label class="control-label col-lg-2">Area de Evaluación:</label>
                     </div>
@@ -423,9 +567,17 @@
                     <!-- ***PREGUNTA 1 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 1 <span class="required">*</span></label>
-                      <div class="col-lg-10">
+                      <div class="col-lg-8">
                         <input class="form-control " id="p_evaluacion_1" type="text" name="evaluacion_1" placeholder="Pregunta de evaluación 1" required />
                       </div>
+                        
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_evaluacion1)" id="btn_imagen_evaluacion1">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_imagen_evaluacion1" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_evaluacion1)">
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -437,7 +589,7 @@
                         </div>
                       <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_correcta_evaluacion_1" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <input class="form-control " id="r2_incorrecta_evaluacion_1" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
                       </div>
                     </div>
                         
@@ -456,9 +608,17 @@
                     <!-- ***PREGUNTA 2 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 2 <span class="required">*</span></label>
-                      <div class="col-lg-10">
+                      <div class="col-lg-8">
                         <input class="form-control " id="p_evaluacion_2" type="text" name="evaluacion_2" placeholder="Pregunta de evaluación 2" required />
                       </div>
+                        
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_evaluacion2)" id="btn_imagen_evaluacion2">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_imagen_evaluacion2" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_evaluacion2)">
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -470,7 +630,7 @@
                         </div>
                       <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_correcta_evaluacion_2" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <input class="form-control " id="r2_incorrecta_evaluacion_2" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
                       </div>
                     </div>
                         
@@ -489,9 +649,17 @@
                     <!-- ***PREGUNTA 3 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 3 <span class="required">*</span></label>
-                      <div class="col-lg-10">
+                      <div class="col-lg-8">
                         <input class="form-control " id="p_evaluacion_3" type="text" name="evaluacion_3" placeholder="Pregunta de evaluación 3" required />
                       </div>
+                        
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_evaluacion3)" id="btn_imagen_evaluacion3">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_imagen_evaluacion3" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_evaluacion3)">
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -503,7 +671,7 @@
                         </div>
                       <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_correcta_evaluacion_3" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <input class="form-control " id="r2_incorrecta_evaluacion_3" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
                       </div>
                     </div>
                         
@@ -522,9 +690,17 @@
                     <!-- ***PREGUNTA 4 ***-->
                     <div class="form-group ">
                       <label for="cemail" class="control-label col-lg-2">Pregunta 4 <span class="required">*</span></label>
-                      <div class="col-lg-10">
+                      <div class="col-lg-8">
                         <input class="form-control " id="p_evaluacion_4" type="text" name="evaluacion_4" placeholder="Pregunta de evaluación 4" required />
                       </div>
+                        
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_evaluacion4)" id="btn_imagen_evaluacion4">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_imagen_evaluacion4" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_evaluacion4)">
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -536,7 +712,7 @@
                         </div>
                       <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
                       <div class="col-lg-4">
-                        <input class="form-control " id="r2_correcta_evaluacion_4" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                        <input class="form-control " id="r2_incorrecta_evaluacion_4" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
                       </div>
                     </div>
                         
@@ -551,10 +727,55 @@
                       </div>
                     </div>
                     
+                    <!-- ***PREGUNTA 5 ***-->
+                    <div class="form-group ">
+                      <label for="cemail" class="control-label col-lg-2">Pregunta 5 <span class="required">*</span></label>
+                      <div class="col-lg-8">
+                        <input class="form-control " id="p_evaluacion_5" type="text" name="evaluacion_5" placeholder="Pregunta de evaluación 5" required />
+                      </div>
+                        
+                        <!--imagen-->
+                        <div class="col-lg-1">
+                            <button type="button" class="btn btn-info" onclick="imagen(input_imagen_evaluacion5)" id="btn_imagen_evaluacion5">
+                            <span class="fa fa-image"></span>  Subir Imagen
+                            </button>
+                            <input type="file" style="display:none;" class="form-control" id="input_imagen_evaluacion5" placeholder="Subir Imagen" accept="image/*" onchange="cambio_imagen(this,btn_imagen_evaluacion5)">
+                        </div>
+                    </div>
                     
-                      
-                      
-                  </form>
+                    <div class="form-group">
+                        <div class="has-success">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Correcta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="r1_correcta_evaluacion_5" type="text" name="r_correcta" placeholder="Respuesta CORRECTA" required />
+                          </div>
+                        </div>
+                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <input class="form-control " id="r2_incorrecta_evaluacion_5" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                      </div>
+                    </div>
+                        
+                    <div class="form-group">
+                          <label for="cemail" class="control-label col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                          <div class="col-lg-4">
+                            <input class="form-control is-valid" id="r3_incorrecta_evaluacion_5" type="text" placeholder="Respuesta INCORRECTA" name="r_incorrecta" required />
+                          </div>
+                      <label for="cemail" class="col-lg-2">Respuesta Incorrecta <span class="required">*</span></label>
+                      <div class="col-lg-4">
+                        <input class="form-control " id="r4_incorrecta_evaluacion_5" type="text" name="r_incorrecta" placeholder="Respuesta INCORRECTA" required />
+                      </div>
+                    </div>
+                    
+                    <!-- *** BOTONES ***-->
+                    
+                    <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10">
+                        <button class="btn btn-success" onclick="ObtenerDatos()">Guardar Curso</button>
+                        <button class="btn btn-danger" type="button">Cancelar</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
               </div>
@@ -563,6 +784,8 @@
         </div>
           
         <!-- page end-->
+          
+          
       </section>
     </section>
     <!--main content end-->
@@ -600,6 +823,11 @@
 </html>
 
 <script>
+    //funciones al cargar la pagina
+    window.onload=function() {
+			autollenado();
+    }
+    //metodos
     function CrearCurso(){
         location.href ="FormularioCrearCurso.html";
     }
@@ -610,10 +838,466 @@
     function cambio_imagen(input,boton){
         var curFiles = input.files;
         if(curFiles.length === 0) {
-          $(boton).text("Subir imagen");
+          //$(boton).text("Subir imagen");
+            $(boton).html('<span class="fa fa-image"></span>  Subir Imagen');
         }else{
           $(boton).text(curFiles[0].name);
         }
     }
+    
+    function SelectImagen(){
+        document.getElementById('div_btn_imagen').style.display="block"; document.getElementById('div_input_video').style.display="none";
+        if(document.getElementById('input_imagen').checked==true){
+            console.log("imagen seleccionada");
+        }
+        /*if(document.getElementById('input_video')==true){
+            //console.log("video seleccionado");
+        }//*/
+    }
+    
+    function SelectVideo(){ document.getElementById('div_btn_imagen').style.display="none"; document.getElementById('div_input_video').style.display="block";
+        if(document.getElementById('input_video').checked==true){
+            console.log("video seleccionado");
+        }
+        
+    }
+    
+    function ObtenerDatos(){
+        var titulo = $("#titulo_curso").val();
+        var imagen;
+        var video;
+        var file_imagen;
+        var objetivo = $("#objetivo").val();
+        var descripcion = $("#descripcion").val();
+        //Ejemplo
+        var ejemplo = $("#ejemplo").val();
+        var imagen_ejemplo = document.getElementById('input_ejemplo');
+        var file_imagen_ejemplo;
+        var r1_correcta_ejemplo = $("#r1_correcta_ejemplo").val();
+        var r2_incorrecta_ejemplo = $("#r2_incorrecta_ejemplo").val();
+        var r3_incorrecta_ejemplo = $("#r3_incorrecta_ejemplo").val();
+        var r4_incorrecta_ejemplo = $("#r4_incorrecta_ejemplo").val();
+        var retroalimentacion_ejemplo = $("#retroalimentacion_ejemplo").val();
+        
+        //EJERCICIOS
+        //Pregunta 1
+        var ejercicio_1 = $("#p_ejercicio_1").val();
+        var imagen_ejercicio_1 = document.getElementById('input_imagen_ejercicio1');
+        var file_imagen_ejercicio1;
+        var r1_correcta_ejercicio1 = $("#respuesta1_p_e1").val();
+        var retroalimentacion_p1_e1 = $("#retroalimentacion_r1_e1").val();
+        var r2_incorrecta_ejercicio1 = $("#respuesta2_p_e1").val();
+        var retroalimentacion_p2_e1 = $("#retroalimentacion_r2_e1").val();
+        var r3_incorrecta_ejercicio1 = $("#respuesta3_p_e1").val();
+        var retroalimentacion_p3_e1 = $("#retroalimentacion_r3_e1").val();
+        var r4_incorrecta_ejercicio1 = $("#respuesta4_p_e1").val();
+        var retroalimentacion_p4_e1 = $("#retroalimentacion_r4_e1").val();
+        //Pregunta 2
+        var ejercicio_2 = $("#p_ejercicio_2").val();
+        var imagen_ejercicio_2 = document.getElementById('input_imagen_ejercicio2');
+        var file_imagen_ejercicio2;
+        var r1_correcta_ejercicio2 = $("#respuesta1_p_e2").val();
+        var retroalimentacion_p1_e2 = $("#retroalimentacion_r1_e2").val();
+        var r2_incorrecta_ejercicio2 = $("#respuesta2_p_e2").val();
+        var retroalimentacion_p2_e2 = $("#retroalimentacion_r2_e2").val();
+        var r3_incorrecta_ejercicio2 = $("#respuesta3_p_e2").val();
+        var retroalimentacion_p3_e2 = $("#retroalimentacion_r3_e2").val();
+        var r4_incorrecta_ejercicio2 = $("#respuesta4_p_e2").val();
+        var retroalimentacion_p4_e2 = $("#retroalimentacion_r4_e2").val();
+        //Pregunta 3
+        var ejercicio_3 = $("#p_ejercicio_3").val();
+        var imagen_ejercicio_3 = document.getElementById('input_imagen_ejercicio3');
+        var file_imagen_ejercicio3;
+        var r1_correcta_ejercicio3 = $("#respuesta1_p_e3").val();
+        var retroalimentacion_p1_e3 = $("#retroalimentacion_r1_e3").val();
+        var r2_incorrecta_ejercicio3 = $("#respuesta2_p_e3").val();
+        var retroalimentacion_p2_e3 = $("#retroalimentacion_r2_e3").val();
+        var r3_incorrecta_ejercicio3 = $("#respuesta3_p_e3").val();
+        var retroalimentacion_p3_e3 = $("#retroalimentacion_r3_e3").val();
+        var r4_incorrecta_ejercicio3 = $("#respuesta4_p_e3").val();
+        var retroalimentacion_p4_e3 = $("#retroalimentacion_r4_e3").val();
+        //Pregunta 4
+        var ejercicio_4 = $("#p_ejercicio_4").val();
+        var imagen_ejercicio_4 = document.getElementById('input_imagen_ejercicio4');
+        var file_imagen_ejercicio4;
+        var r1_correcta_ejercicio4 = $("#respuesta1_p_e4").val();
+        var retroalimentacion_p1_e4 = $("#retroalimentacion_r1_e4").val();
+        var r2_incorrecta_ejercicio4 = $("#respuesta2_p_e4").val();
+        var retroalimentacion_p2_e4 = $("#retroalimentacion_r2_e4").val();
+        var r3_incorrecta_ejercicio4 = $("#respuesta3_p_e4").val();
+        var retroalimentacion_p3_e4 = $("#retroalimentacion_r3_e4").val();
+        var r4_incorrecta_ejercicio4 = $("#respuesta4_p_e4").val();
+        var retroalimentacion_p4_e4 = $("#retroalimentacion_r4_e4").val();
+        //Pregunta 3
+        var ejercicio_5 = $("#p_ejercicio_5").val();
+        var imagen_ejercicio_5 = document.getElementById('input_imagen_ejercicio5');
+        var file_imagen_ejercicio5;
+        var r1_correcta_ejercicio5 = $("#respuesta1_p_e5").val();
+        var retroalimentacion_p1_e5 = $("#retroalimentacion_r1_e5").val();
+        var r2_incorrecta_ejercicio5 = $("#respuesta2_p_e5").val();
+        var retroalimentacion_p2_e5 = $("#retroalimentacion_r2_e5").val();
+        var r3_incorrecta_ejercicio5 = $("#respuesta3_p_e5").val();
+        var retroalimentacion_p3_e5 = $("#retroalimentacion_r3_e5").val();
+        var r4_incorrecta_ejercicio5 = $("#respuesta4_p_e5").val();
+        var retroalimentacion_p4_e5 = $("#retroalimentacion_r4_e5").val();
+        
+        //EVALUACION
+        //pregunta 1
+        var evaluacion1 = $("#p_evaluacion_1").val();
+        var imagen_evaluacion_1 = document.getElementById('input_imagen_evaluacion1');
+        var file_imagen_evaluacion1;
+        var r1_evaluacion1 = $("#r1_correcta_evaluacion_1").val();
+        var r2_evaluacion1 = $("#r2_incorrecta_evaluacion_1").val();
+        var r3_evaluacion1 = $("#r3_incorrecta_evaluacion_1").val();
+        var r4_evaluacion1 = $("#r4_incorrecta_evaluacion_1").val();
+        
+        //pregunta 2
+        var evaluacion2 = $("#p_evaluacion_2").val();
+        var imagen_evaluacion_2 = document.getElementById('input_imagen_evaluacion2');
+        var file_imagen_evaluacion2;
+        var r1_evaluacion2 = $("#r1_correcta_evaluacion_2").val();
+        var r2_evaluacion2 = $("#r2_incorrecta_evaluacion_2").val();
+        var r3_evaluacion2 = $("#r3_incorrecta_evaluacion_2").val();
+        var r4_evaluacion2 = $("#r4_incorrecta_evaluacion_2").val();
+        
+        //pregunta 3
+        var evaluacion3 = $("#p_evaluacion_3").val();
+        var imagen_evaluacion_3 = document.getElementById('input_imagen_evaluacion3');
+        var file_imagen_evaluacion3;
+        var r1_evaluacion3 = $("#r1_correcta_evaluacion_3").val();
+        var r2_evaluacion3 = $("#r2_incorrecta_evaluacion_3").val();
+        var r3_evaluacion3 = $("#r3_incorrecta_evaluacion_3").val();
+        var r4_evaluacion3 = $("#r4_incorrecta_evaluacion_3").val();
+        
+        //pregunta 4
+        var evaluacion4 = $("#p_evaluacion_4").val();
+        var imagen_evaluacion_4 = document.getElementById('input_imagen_evaluacion4');
+        var file_imagen_evaluacion4;
+        var r1_evaluacion4 = $("#r1_correcta_evaluacion_4").val();
+        var r2_evaluacion4 = $("#r2_incorrecta_evaluacion_4").val();
+        var r3_evaluacion4 = $("#r3_incorrecta_evaluacion_4").val();
+        var r4_evaluacion4 = $("#r4_incorrecta_evaluacion_4").val();
+        
+        //pregunta 5
+        var evaluacion5 = $("#p_evaluacion_5").val();
+        var imagen_evaluacion_5 = document.getElementById('input_imagen_evaluacion5');
+        var file_imagen_evaluacion5;
+        var r1_evaluacion5 = $("#r1_correcta_evaluacion_5").val();
+        var r2_evaluacion5 = $("#r2_incorrecta_evaluacion_5").val();
+        var r3_evaluacion5 = $("#r3_incorrecta_evaluacion_5").val();
+        var r4_evaluacion5 = $("#r4_incorrecta_evaluacion_5").val();
+        
+        //Imprecion de Variables
+        
+        //Información del sobre el CURSO
+        //Obtener informacion sobre imagen o video
+        console.log("INFORMACION DEL CURSO****************");
+        if(document.getElementById('input_imagen').checked==true){
+            //console.log("entra a on en imagen");
+            imagen = document.getElementById('input_imagen_titulo');
+        }else{
+            //console.log("imagen off");
+            imagen = false;
+        }
+        
+        if(document.getElementById('input_video').checked==true){
+            //console.log("entra a on en video");
+            video = $("#input_url_video").val();
+        }else{
+            //console.log("video off");
+            video = false;
+        }
+        
+        //impresion de valores obtenidos
+        console.log("titulo: "+titulo);
+        
+        if(imagen){
+            file_imagen=imagen.files[0];
+            console.log("imagen: "+file_imagen.name);
+        }else{
+            console.log("imagen: Sin Imagen");
+        }
+        
+        if(video){
+            console.log("video: "+video);
+        }else{
+            console.log("video: sin video");
+        }
+        
+        //seccion de ejemplo
+        console.log("INFORMACION DEL EJEMPLO****************");
+        console.log("Ejemplo: "+ejemplo);
+        if(imagen_ejemplo.value == ""){
+            console.log("imagen_ejemplo: Sin Imagen");
+        }else{
+            file_imagen_ejemplo = imagen_ejemplo.files[0];
+            console.log("imagen_ejemplo: " + file_imagen_ejemplo.name);
+        }
+        console.log("R_correcta: " + r1_correcta_ejemplo);
+        console.log("R_incorrecta1" + r2_incorrecta_ejemplo);
+        console.log("R_incorrecta2" + r3_incorrecta_ejemplo);
+        console.log("R_incorrecta3" + r4_incorrecta_ejemplo);
+        console.log("Retroalimentacion: " + retroalimentacion_ejemplo);
+        
+        //EJERCICIOS
+        //Pregunta 2
+        console.log("Ejercicio1: "+ejercicio_1);
+        if(imagen_ejercicio_1.value == ""){
+            console.log("imagen_ejercicio1: Sin Imagen");
+        }else{
+            file_imagen_ejercicio1 = imagen_ejercicio_1.files[0];
+            console.log("imag_ejercicio1: " + file_imagen_ejercicio1.name);
+        }
+        console.log("R correcta ej1: "+r1_correcta_ejercicio1);
+        console.log("Retroalimentacion r1 ej1: "+retroalimentacion_p1_e1);
+        console.log("R incorrecta1 ej1: "+r2_incorrecta_ejercicio1);
+        console.log("Retroalimentacion r2 ej1: "+retroalimentacion_p2_e1);
+        console.log("R incorrecta2 ej1: "+r3_incorrecta_ejercicio1);
+        console.log("Retroalimentacion r3 ej1: "+retroalimentacion_p3_e1);
+        console.log("R incorrecta3 ej1: "+r4_incorrecta_ejercicio1);
+        console.log("Retroalimentacion r4 ej1: "+retroalimentacion_p4_e1);
+        console.log("+++++++++++++++++");
+        //console.log(""+);
+        
+        //ejercicio 2
+        console.log("Ejercicio2: "+ejercicio_2);
+        if(imagen_ejercicio_2.value == ""){
+            console.log("imagen_ejercicio2: Sin Imagen");
+        }else{
+            file_imagen_ejercicio2 = imagen_ejercicio_2.files[0];
+            console.log("imag_ejercicio2: " + file_imagen_ejercicio2.name);
+        }
+        console.log("R correcta ej2: "+r1_correcta_ejercicio2);
+        console.log("Retroalimentacion r1 ej2: "+retroalimentacion_p1_e2);
+        console.log("R incorrecta1 ej2: "+r2_incorrecta_ejercicio2);
+        console.log("Retroalimentacion r2 ej2: "+retroalimentacion_p2_e2);
+        console.log("R incorrecta2 ej2: "+r3_incorrecta_ejercicio2);
+        console.log("Retroalimentacion r3 ej2: "+retroalimentacion_p3_e2);
+        console.log("R incorrecta3 ej2: "+r4_incorrecta_ejercicio2);
+        console.log("Retroalimentacion r4 ej2: "+retroalimentacion_p4_e2);
+        console.log("+++++++++++++++++");
+        
+        //ejercicio 3
+        console.log("Ejercicio3: "+ejercicio_3);
+        if(imagen_ejercicio_3.value == ""){
+            console.log("imagen_ejercicio3: Sin Imagen");
+        }else{
+            file_imagen_ejercicio3 = imagen_ejercicio_3.files[0];
+            console.log("imag_ejercicio3: " + file_imagen_ejercicio3.name);
+        }
+        console.log("R correcta ej3: "+r1_correcta_ejercicio3);
+        console.log("Retroalimentacion r1 ej3: "+retroalimentacion_p1_e3);
+        console.log("R incorrecta1 ej3: "+r2_incorrecta_ejercicio3);
+        console.log("Retroalimentacion r2 ej3: "+retroalimentacion_p2_e3);
+        console.log("R incorrecta2 ej3: "+r3_incorrecta_ejercicio3);
+        console.log("Retroalimentacion r3 ej3: "+retroalimentacion_p3_e3);
+        console.log("R incorrecta3 ej3: "+r4_incorrecta_ejercicio3);
+        console.log("Retroalimentacion r4 ej3: "+retroalimentacion_p4_e3);
+        console.log("+++++++++++++++++");
+        
+        
+        //ejercicio 4
+        console.log("Ejercicio4: "+ejercicio_4);
+        if(imagen_ejercicio_4.value == ""){
+            console.log("imagen_ejercicio4: Sin Imagen");
+        }else{
+            file_imagen_ejercicio4 = imagen_ejercicio_4.files[0];
+            console.log("imag_ejercicio4: " + file_imagen_ejercicio4.name);
+        }
+        console.log("R correcta ej4: "+r1_correcta_ejercicio4);
+        console.log("Retroalimentacion r1 ej4: "+retroalimentacion_p1_e4);
+        console.log("R incorrecta1 ej4: "+r2_incorrecta_ejercicio4);
+        console.log("Retroalimentacion r2 ej4: "+retroalimentacion_p2_e4);
+        console.log("R incorrecta2 ej4: "+r3_incorrecta_ejercicio4);
+        console.log("Retroalimentacion r3 ej4: "+retroalimentacion_p3_e4);
+        console.log("R incorrecta3 ej4: "+r4_incorrecta_ejercicio4);
+        console.log("Retroalimentacion r4 ej4: "+retroalimentacion_p4_e4);
+        console.log("+++++++++++++++++");
+        
+        //ejercicio 5
+        console.log("Ejercicio5: "+ejercicio_5);
+        if(imagen_ejercicio_5.value == ""){
+            console.log("imagen_ejercicio5: Sin Imagen");
+        }else{
+            file_imagen_ejercicio5 = imagen_ejercicio_5.files[0];
+            console.log("imag_ejercicio5: " + file_imagen_ejercicio5.name);
+        }
+        console.log("R correcta ej5: "+r1_correcta_ejercicio5);
+        console.log("Retroalimentacion r1 ej5: "+retroalimentacion_p1_e5);
+        console.log("R incorrecta1 ej5: "+r2_incorrecta_ejercicio5);
+        console.log("Retroalimentacion r2 ej5: "+retroalimentacion_p2_e5);
+        console.log("R incorrecta2 ej5: "+r3_incorrecta_ejercicio5);
+        console.log("Retroalimentacion r3 ej5: "+retroalimentacion_p3_e5);
+        console.log("R incorrecta3 ej5: "+r4_incorrecta_ejercicio5);
+        console.log("Retroalimentacion r4 ej5: "+retroalimentacion_p4_e5);
+        console.log("+++++++++++++++++");
+        
+        //Evaluaciones
+        //Pregunta 1
+        console.log("Evaluacion1: "+evaluacion1);
+        if(imagen_evaluacion_1.value == ""){
+            console.log("imagen_evaluacion1: Sin Imagen");
+        }else{
+            file_imagen_evaluacion1 = imagen_evaluacion_1.files[0];
+            console.log("imag_evaluacion1: " + file_imagen_evaluacion1.name);
+        }
+        console.log("Respuesta 1: " + r1_evaluacion1);
+        console.log("Respuesta 2: " + r2_evaluacion1);
+        console.log("Respuesta 3: " + r3_evaluacion1);
+        console.log("Respuesta 4: " + r4_evaluacion1);
+        
+        //Pregunta 2
+        console.log("Evaluacion2: "+evaluacion2);
+        if(imagen_evaluacion_2.value == ""){
+            console.log("imagen_evaluacion2: Sin Imagen");
+        }else{
+            file_imagen_evaluacion2 = imagen_evaluacion_2.files[0];
+            console.log("imag_ejvaluacion2: " + file_imagen_evaluacion2.name);
+        }
+        console.log("Respuesta 1: " + r1_evaluacion2);
+        console.log("Respuesta 2: " + r2_evaluacion2);
+        console.log("Respuesta 3: " + r3_evaluacion2);
+        console.log("Respuesta 4: " + r4_evaluacion2);//
+        
+        //Pregunta 3
+        console.log("Evaluacion3: "+evaluacion3);
+        if(imagen_evaluacion_3.value == ""){
+            console.log("imagen_evaluacion3: Sin Imagen");
+        }else{
+            file_imagen_evaluacion3 = imagen_evaluacion_3.files[0];
+            console.log("imag_ejvaluacion3: " + file_imagen_evaluacion3.name);
+        }
+        console.log("Respuesta 1: " + r1_evaluacion3);
+        console.log("Respuesta 2: " + r2_evaluacion3);
+        console.log("Respuesta 3: " + r3_evaluacion3);
+        console.log("Respuesta 4: " + r4_evaluacion3);//
+        
+        //Pregunta 4
+        console.log("Evaluacion4: "+evaluacion4);
+        if(imagen_evaluacion_4.value == ""){
+            console.log("imagen_evaluacion4: Sin Imagen");
+        }else{
+            file_imagen_evaluacion4 = imagen_evaluacion_4.files[0];
+            console.log("imag_ejvaluacion4: " + file_imagen_evaluacion4.name);
+        }
+        console.log("Respuesta 1: " + r1_evaluacion4);
+        console.log("Respuesta 2: " + r2_evaluacion4);
+        console.log("Respuesta 3: " + r3_evaluacion4);
+        console.log("Respuesta 4: " + r4_evaluacion4);//
+        
+        //Pregunta 5
+        console.log("Evaluacion5: "+evaluacion5);
+        if(imagen_evaluacion_5.value == ""){
+            console.log("imagen_evaluacion5: Sin Imagen");
+        }else{
+            file_imagen_evaluacion5 = imagen_evaluacion_5.files[0];
+            console.log("imag_ejvaluacion5: " + file_imagen_evaluacion5.name);
+        }
+        console.log("Respuesta 1: " + r1_evaluacion5);
+        console.log("Respuesta 2: " + r2_evaluacion5);
+        console.log("Respuesta 3: " + r3_evaluacion5);
+        console.log("Respuesta 4: " + r4_evaluacion5);//
+        console.log();
+        
+        
+    }
+    
+    function autollenado(){
+        $("#titulo_curso").val("Titulo del curso");
+        $("#objetivo").val("Objetivo del curso");
+        $("#descripcion").val("Descripcion del curso");
+        //Ejemplo
+        $("#ejemplo").val("Pregunta de ejemplo");
+        $("#r1_correcta_ejemplo").val("Respuesta correcta del ejemplo");
+        $("#r2_incorrecta_ejemplo").val("Respuesta incorrecta 1 ejemplo");
+        $("#r3_incorrecta_ejemplo").val("Respuesta incorrecta 2 ejemplo");
+        $("#r4_incorrecta_ejemplo").val("Respuesta incorrecta 3 ejemplo");
+        $("#retroalimentacion_ejemplo").val("Retroalimentacion ejemplo");
+        
+        //EJERCICIOS
+        //Pregunta 1
+        $("#p_ejercicio_1").val("Pregunta ejercicio 1");
+        $("#respuesta1_p_e1").val("Respuesta correcta ej1");
+        $("#retroalimentacion_r1_e1").val("Retroalimentacion 1 ej1");
+        $("#respuesta2_p_e1").val("Respuesta incorrecta 1 ej1");
+        $("#retroalimentacion_r2_e1").val("Retroalimentacion 2 ej1");
+        $("#respuesta3_p_e1").val("Respuesta incorrecta 2 ej1");
+        $("#retroalimentacion_r3_e1").val("Retroalimentacion 3 ej1");
+        $("#respuesta4_p_e1").val("Respuesta incorrecta 3 ej1");
+        $("#retroalimentacion_r4_e1").val("Retroalimentacion 4 ej1");
+        //Pregunta 2
+        $("#p_ejercicio_2").val("Pregunta ejercicio 2");
+        $("#respuesta1_p_e2").val("Respuesta correcta ej2");
+        $("#retroalimentacion_r1_e2").val("Retroalimentacion 1 ej2");
+        $("#respuesta2_p_e2").val("Respuesta incorrecta 1 ej2");
+        $("#retroalimentacion_r2_e2").val("Retroalimentacion 2 ej2");
+        $("#respuesta3_p_e2").val("Respuesta incorrecta 2 ej2");
+        $("#retroalimentacion_r3_e2").val("Retroalimentacion 3 ej2");
+        $("#respuesta4_p_e2").val("Respuesta incorrecta 3 ej2");
+        $("#retroalimentacion_r4_e2").val("Retroalimentacion 4 ej2");
+        //Pregunta 3
+        $("#p_ejercicio_3").val("Pregunta ejercicio 3");
+        $("#respuesta1_p_e3").val("Respuesta correcta ej3");
+        $("#retroalimentacion_r1_e3").val("Retroalimentacion 1 ej3");
+        $("#respuesta2_p_e3").val("Respuesta incorrecta 1 ej3");
+        $("#retroalimentacion_r2_e3").val("Retroalimentacion 2 ej3");
+        $("#respuesta3_p_e3").val("Respuesta incorrecta 2 ej3");
+        $("#retroalimentacion_r3_e3").val("Retroalimentacion 3 ej3");
+        $("#respuesta4_p_e3").val("Respuesta incorrecta 3 ej3");
+        $("#retroalimentacion_r4_e3").val("Retroalimentacion 4 ej3");
+        //Pregunta 4
+        $("#p_ejercicio_4").val("Pregunta ejercicio 4");
+        $("#respuesta1_p_e4").val("Respuesta correcta ej4");
+        $("#retroalimentacion_r1_e4").val("Retroalimentacion 1 ej4");
+        $("#respuesta2_p_e4").val("Respuesta incorrecta 1 ej4");
+        $("#retroalimentacion_r2_e4").val("Retroalimentacion 2 ej4");
+        $("#respuesta3_p_e4").val("Respuesta incorrecta 2 ej4");
+        $("#retroalimentacion_r3_e4").val("Retroalimentacion 3 ej4");
+        $("#respuesta4_p_e4").val("Respuesta incorrecta 3 ej4");
+        $("#retroalimentacion_r4_e4").val("Retroalimentacion 4 ej4");
+        //Pregunta 2
+        $("#p_ejercicio_5").val("Pregunta ejercicio 5");
+        $("#respuesta1_p_e5").val("Respuesta correcta ej5");
+        $("#retroalimentacion_r1_e5").val("Retroalimentacion 1 ej5");
+        $("#respuesta2_p_e5").val("Respuesta incorrecta 1 ej5");
+        $("#retroalimentacion_r2_e5").val("Retroalimentacion 2 ej5");
+        $("#respuesta3_p_e5").val("Respuesta incorrecta 2 ej5");
+        $("#retroalimentacion_r3_e5").val("Retroalimentacion 3 ej5");
+        $("#respuesta4_p_e5").val("Respuesta incorrecta 3 ej5");
+        $("#retroalimentacion_r4_e5").val("Retroalimentacion 4 ej5");
+        //Evaluacion
+        //pregunta 1
+        $("#p_evaluacion_1").val("Pregunta evaluacion 1");
+        $("#r1_correcta_evaluacion_1").val("Respuesta correcta eval1");
+        $("#r2_incorrecta_evaluacion_1").val("Respuesta incorrecta 1 eval1");
+        $("#r3_incorrecta_evaluacion_1").val("Respuesta incorrecta 2 eval1");
+        $("#r4_incorrecta_evaluacion_1").val("Respuesta incorrecta 3 eval1");
+        //pregunta 2
+        $("#p_evaluacion_2").val("Pregunta evaluacion 2");
+        $("#r1_correcta_evaluacion_2").val("Respuesta correcta eval2");
+        $("#r2_incorrecta_evaluacion_2").val("Respuesta incorrecta 1 eval2");
+        $("#r3_incorrecta_evaluacion_2").val("Respuesta incorrecta 2 eval2");
+        $("#r4_incorrecta_evaluacion_2").val("Respuesta incorrecta 3 eval2");
+        //pregunta 3
+        $("#p_evaluacion_3").val("Pregunta evaluacion 3");
+        $("#r1_correcta_evaluacion_3").val("Respuesta correcta eval3");
+        $("#r2_incorrecta_evaluacion_3").val("Respuesta incorrecta 1 eval3");
+        $("#r3_incorrecta_evaluacion_3").val("Respuesta incorrecta 2 eval3");
+        $("#r4_incorrecta_evaluacion_3").val("Respuesta incorrecta 3 eval3");
+        //pregunta 4
+        $("#p_evaluacion_4").val("Pregunta evaluacion 4");
+        $("#r1_correcta_evaluacion_4").val("Respuesta correcta eval4");
+        $("#r2_incorrecta_evaluacion_4").val("Respuesta incorrecta 1 eval4");
+        $("#r3_incorrecta_evaluacion_4").val("Respuesta incorrecta 2 eval4");
+        $("#r4_incorrecta_evaluacion_4").val("Respuesta incorrecta 3 eval4");
+        //pregunta 5
+        $("#p_evaluacion_5").val("Pregunta evaluacion 5");
+        $("#r1_correcta_evaluacion_5").val("Respuesta correcta eval5");
+        $("#r2_incorrecta_evaluacion_5").val("Respuesta incorrecta 1 eval5");
+        $("#r3_incorrecta_evaluacion_5").val("Respuesta incorrecta 2 eval5");
+        $("#r4_incorrecta_evaluacion_5").val("Respuesta incorrecta 3 eval5");
+        
+    }
+    
     
 </script>
