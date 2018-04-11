@@ -8,7 +8,14 @@
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
-
+  
+  <!-- evitar cache en el navegador -->
+    
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+    
   <title>Blank | Creative - Bootstrap 3 Responsive Admin Template</title>
 
   <!-- Bootstrap CSS -->
@@ -22,6 +29,8 @@
   <!-- Custom styles -->
   <link href="../css/style.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet" />
+    
+    
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
@@ -140,7 +149,7 @@
               </header>
               <div class="panel-body">
                 <div class="form">
-                  <div class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+                  <form class="form-validate form-horizontal" id="feedback_form" onsubmit="return fake_submit()">
                       
                     <div class="form-group ">
                       <label for="cname" class="control-label col-lg-2">Título <span class="required">*</span></label>
@@ -771,21 +780,18 @@
                     
                     <div class="form-group">
                       <div class="col-lg-offset-2 col-lg-10">
-                        <button class="btn btn-success" onclick="ObtenerDatos()">Guardar Curso</button>
-                        <button class="btn btn-danger" type="button">Cancelar</button>
+                        <button class="btn btn-success" onclick="ObtenerDatos() ">Guardar Curso</button>
+                        <button class="btn btn-danger" type="button" onclick="cancelar()">Cancelar</button>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
 
               </div>
             </section>
           </div>
         </div>
-          
         <!-- page end-->
-          
-          
       </section>
     </section>
     <!--main content end-->
@@ -811,12 +817,9 @@
   <script src="../js/scripts.js"></script>
   <script src="../js/gestion_cuenta.js"></script>
     
-  <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-
-  <!-- custom form validation script for this page-->
-  <script src="../js/form-validation-script.js"></script>
   <!--custome script for all page-->
-  <script src="../js/scripts.js"></script>
+  <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
+  <script src="../js/form-validation-script.js"></script>
 
 </body>
 
@@ -991,7 +994,7 @@
         
         //Información del sobre el CURSO
         //Obtener informacion sobre imagen o video
-        console.log("INFORMACION DEL CURSO****************");
+        
         if(document.getElementById('input_imagen').checked==true){
             //console.log("entra a on en imagen");
             imagen = document.getElementById('input_imagen_titulo');
@@ -1007,13 +1010,19 @@
             //console.log("video off");
             video = false;
         }
+        /*console.log("INFORMACION DEL CURSO****************");
+        
         
         //impresion de valores obtenidos
         console.log("titulo: "+titulo);
         
         if(imagen){
-            file_imagen=imagen.files[0];
-            console.log("imagen: "+file_imagen.name);
+            if(imagen.value !=""){
+                file_imagen=imagen.files[0];
+                console.log("imagen: "+file_imagen.name);
+            }else{
+                console.log("Imagen: No seleccionada");
+            }
         }else{
             console.log("imagen: Sin Imagen");
         }
@@ -1040,7 +1049,7 @@
         console.log("Retroalimentacion: " + retroalimentacion_ejemplo);
         
         //EJERCICIOS
-        //Pregunta 2
+        //Pregunta 1
         console.log("Ejercicio1: "+ejercicio_1);
         if(imagen_ejercicio_1.value == ""){
             console.log("imagen_ejercicio1: Sin Imagen");
@@ -1197,9 +1206,254 @@
         console.log("Respuesta 2: " + r2_evaluacion5);
         console.log("Respuesta 3: " + r3_evaluacion5);
         console.log("Respuesta 4: " + r4_evaluacion5);//
-        console.log();
+        //*/
         
+        //***************************************************
+        //formulario
+        var dataForm = new FormData();
+        dataForm.append("titulo",titulo);
         
+        if(imagen){
+            if(imagen.value ==""){
+                dataForm.append("simagen_c",false);
+            }else{
+                file_imagen=imagen.files[0];
+                dataForm.append("simagen_c",true);
+                dataForm.append("imagen_curso",file_imagen);
+            }
+        }else{
+            dataForm.append("simagen_c",false);
+        }
+        
+        if(video){
+            dataForm.append("svideo_c",true);
+            dataForm.append("video",video);
+        }else{
+            dataForm.append("svideo_c",false);
+        }
+        dataForm.append('objetivo',objetivo);
+        dataForm.append('descripcion',descripcion);
+        
+        //seccion ejemplo
+        //seccion de ejemplo
+        dataForm.append("ejemplo",ejemplo);
+        if(imagen_ejemplo.value == ""){
+            dataForm.append("simagen_ejemplo",false);
+        }else{
+            file_imagen_ejemplo = imagen_ejemplo.files[0];
+            dataForm.append("simagen_ejemplo",true);
+            dataForm.append("imagen_ejemplo",file_imagen_ejemplo);
+        }
+        dataForm.append("r1_correcta_ejemplo", r1_correcta_ejemplo);
+        dataForm.append("r2_incorrecta_ejemplo", r2_incorrecta_ejemplo);
+        dataForm.append("r3_incorrecta_ejemplo", r3_incorrecta_ejemplo);
+        dataForm.append("r4_incorrecta_ejemplo", r4_incorrecta_ejemplo);
+        dataForm.append("retroalimentacion_ejemplo", retroalimentacion_ejemplo);
+        
+        //seccion ejercicios
+        //ejercicio 1
+        dataForm.append("ejercicio_1",ejercicio_1);
+        if(imagen_ejercicio_1.value == ""){
+            dataForm.append("simagen_ejercicio1",false);
+        }else{
+            file_imagen_ejercicio1 = imagen_ejercicio_1.files[0];
+            dataForm.append("simagen_ejercicio1",true);
+            dataForm.append("imagen_ejercicio1",file_imagen_ejercicio1);
+        }
+        dataForm.append("r1_correcta_ejercicio1",r1_correcta_ejercicio1);
+        dataForm.append("r2_incorrecta_ejercicio1",r2_incorrecta_ejercicio1);
+        dataForm.append("r3_incorrecta_ejercicio1",r3_incorrecta_ejercicio1);
+        dataForm.append("r4_incorrecta_ejercicio1",r4_incorrecta_ejercicio1);
+        dataForm.append("retroalimentacion_p1_e1",retroalimentacion_p1_e1);
+        dataForm.append("retroalimentacion_p2_e1",retroalimentacion_p2_e1);
+        dataForm.append("retroalimentacion_p3_e1",retroalimentacion_p3_e1);
+        dataForm.append("retroalimentacion_p4_e1",retroalimentacion_p4_e1);
+        
+        //ejercicio 2
+        dataForm.append("ejercicio_2",ejercicio_2);
+        if(imagen_ejercicio_2.value == ""){
+            dataForm.append("simagen_ejercicio2",false);
+        }else{
+            file_imagen_ejercicio2 = imagen_ejercicio_2.files[0];
+            dataForm.append("simagen_ejercicio2",true);
+            dataForm.append("imagen_ejercicio2",file_imagen_ejercicio2);
+        }
+        dataForm.append("r1_correcta_ejercicio2",r1_correcta_ejercicio2);
+        dataForm.append("r2_incorrecta_ejercicio2",r2_incorrecta_ejercicio2);
+        dataForm.append("r3_incorrecta_ejercicio2",r3_incorrecta_ejercicio2);
+        dataForm.append("r4_incorrecta_ejercicio2",r4_incorrecta_ejercicio2);
+        dataForm.append("retroalimentacion_p1_e2",retroalimentacion_p1_e2);
+        dataForm.append("retroalimentacion_p2_e2",retroalimentacion_p2_e2);
+        dataForm.append("retroalimentacion_p3_e2",retroalimentacion_p3_e2);
+        dataForm.append("retroalimentacion_p4_e2",retroalimentacion_p4_e2);
+        
+        //ejercicio 3
+        dataForm.append("ejercicio_3",ejercicio_3);
+        if(imagen_ejercicio_3.value == ""){
+            dataForm.append("simagen_ejercicio3",false);
+        }else{
+            file_imagen_ejercicio3 = imagen_ejercicio_3.files[0];
+            dataForm.append("simagen_ejercicio3",true);
+            dataForm.append("imagen_ejercicio3",file_imagen_ejercicio3);
+        }
+        dataForm.append("r1_correcta_ejercicio3",r1_correcta_ejercicio3);
+        dataForm.append("r2_incorrecta_ejercicio3",r2_incorrecta_ejercicio3);
+        dataForm.append("r3_incorrecta_ejercicio3",r3_incorrecta_ejercicio3);
+        dataForm.append("r4_incorrecta_ejercicio3",r4_incorrecta_ejercicio3);
+        dataForm.append("retroalimentacion_p1_e3",retroalimentacion_p1_e3);
+        dataForm.append("retroalimentacion_p2_e3",retroalimentacion_p2_e3);
+        dataForm.append("retroalimentacion_p3_e3",retroalimentacion_p3_e3);
+        dataForm.append("retroalimentacion_p4_e3",retroalimentacion_p4_e3);
+        
+        //ejercicio 4
+        dataForm.append("ejercicio_4",ejercicio_4);
+        if(imagen_ejercicio_4.value == ""){
+            dataForm.append("simagen_ejercicio4",false);
+        }else{
+            file_imagen_ejercicio4 = imagen_ejercicio_4.files[0];
+            dataForm.append("simagen_ejercicio4",true);
+            dataForm.append("imagen_ejercicio4",file_imagen_ejercicio4);
+        }
+        dataForm.append("r1_correcta_ejercicio4",r1_correcta_ejercicio4);
+        dataForm.append("r2_incorrecta_ejercicio4",r2_incorrecta_ejercicio4);
+        dataForm.append("r3_incorrecta_ejercicio4",r3_incorrecta_ejercicio4);
+        dataForm.append("r4_incorrecta_ejercicio4",r4_incorrecta_ejercicio4);
+        dataForm.append("retroalimentacion_p1_e4",retroalimentacion_p1_e4);
+        dataForm.append("retroalimentacion_p2_e4",retroalimentacion_p2_e4);
+        dataForm.append("retroalimentacion_p3_e4",retroalimentacion_p3_e4);
+        dataForm.append("retroalimentacion_p4_e4",retroalimentacion_p4_e4);
+        
+        //ejercicio 5
+        dataForm.append("ejercicio_5",ejercicio_5);
+        if(imagen_ejercicio_5.value == ""){
+            dataForm.append("simagen_ejercicio5",false);
+        }else{
+            file_imagen_ejercicio5 = imagen_ejercicio_5.files[0];
+            dataForm.append("simagen_ejercicio5",true);
+            dataForm.append("imagen_ejercicio5",file_imagen_ejercicio5);
+        }
+        dataForm.append("r1_correcta_ejercicio5",r1_correcta_ejercicio5);
+        dataForm.append("r2_incorrecta_ejercicio5",r2_incorrecta_ejercicio5);
+        dataForm.append("r3_incorrecta_ejercicio5",r3_incorrecta_ejercicio5);
+        dataForm.append("r4_incorrecta_ejercicio5",r4_incorrecta_ejercicio5);
+        dataForm.append("retroalimentacion_p1_e5",retroalimentacion_p1_e5);
+        dataForm.append("retroalimentacion_p2_e5",retroalimentacion_p2_e5);
+        dataForm.append("retroalimentacion_p3_e5",retroalimentacion_p3_e5);
+        dataForm.append("retroalimentacion_p4_e5",retroalimentacion_p4_e5);
+        
+        //Evaluaciones
+        //pregunta 1
+        dataForm.append("evaluacion1",evaluacion1);
+        if(imagen_evaluacion_1.value == ""){
+            dataForm.append("simagen_evaluacion1",false);
+        }else{
+            file_imagen_evaluacion1 = imagen_evaluacion_1.files[0];
+            dataForm.append("simagen_evaluacion1",true);
+            dataForm.append("imagen_evaluacion1",file_imagen_evaluacion1);
+        }
+        dataForm.append("r1_evaluacion1",r1_evaluacion1);
+        dataForm.append("r2_evaluacion1",r2_evaluacion1);
+        dataForm.append("r3_evaluacion1",r3_evaluacion1);
+        dataForm.append("r4_evaluacion1",r4_evaluacion1);
+        
+        //pregunta 2
+        dataForm.append("evaluacion2",evaluacion2);
+        if(imagen_evaluacion_2.value == ""){
+            dataForm.append("simagen_evaluacion2",false);
+        }else{
+            file_imagen_evaluacion2 = imagen_evaluacion_2.files[0];
+            dataForm.append("simagen_evaluacion2",true);
+            dataForm.append("imagen_evaluacion2",file_imagen_evaluacion2);
+        }
+        dataForm.append("r1_evaluacion2",r1_evaluacion2);
+        dataForm.append("r2_evaluacion2",r2_evaluacion2);
+        dataForm.append("r3_evaluacion2",r3_evaluacion2);
+        dataForm.append("r4_evaluacion2",r4_evaluacion2);
+        
+        //pregunta 3
+        dataForm.append("evaluacion3",evaluacion3);
+        if(imagen_evaluacion_3.value == ""){
+            dataForm.append("simagen_evaluacion3",false);
+        }else{
+            file_imagen_evaluacion3 = imagen_evaluacion_3.files[0];
+            dataForm.append("simagen_evaluacion3",true);
+            dataForm.append("imagen_evaluacion3",file_imagen_evaluacion3);
+        }
+        dataForm.append("r1_evaluacion3",r1_evaluacion3);
+        dataForm.append("r2_evaluacion3",r2_evaluacion3);
+        dataForm.append("r3_evaluacion3",r3_evaluacion3);
+        dataForm.append("r4_evaluacion3",r4_evaluacion3);
+        
+        //pregunta 4
+        dataForm.append("evaluacion4",evaluacion4);
+        if(imagen_evaluacion_4.value == ""){
+            dataForm.append("simagen_evaluacion4",false);
+        }else{
+            file_imagen_evaluacion4 = imagen_evaluacion_4.files[0];
+            dataForm.append("simagen_evaluacion4",true);
+            dataForm.append("imagen_evaluacion4",file_imagen_evaluacion4);
+        }
+        dataForm.append("r1_evaluacion4",r1_evaluacion4);
+        dataForm.append("r2_evaluacion4",r2_evaluacion4);
+        dataForm.append("r3_evaluacion4",r3_evaluacion4);
+        dataForm.append("r4_evaluacion4",r4_evaluacion4);
+        
+        //pregunta 5
+        dataForm.append("evaluacion5",evaluacion5);
+        if(imagen_evaluacion_5.value == ""){
+            dataForm.append("simagen_evaluacion5",false);
+        }else{
+            file_imagen_evaluacion5 = imagen_evaluacion_5.files[0];
+            dataForm.append("simagen_evaluacion5",true);
+            dataForm.append("imagen_evaluacion5",file_imagen_evaluacion5);
+        }
+        dataForm.append("r1_evaluacion5",r1_evaluacion5);
+        dataForm.append("r2_evaluacion5",r2_evaluacion5);
+        dataForm.append("r3_evaluacion5",r3_evaluacion5);
+        dataForm.append("r4_evaluacion5",r4_evaluacion5);
+        //console.log(dataForm);
+        Almacenar(dataForm);
+        
+    }
+    
+    function fake_submit(){
+        //alert("EPALE QUE PASO??");
+        return false;
+    }
+    
+    function Almacenar(dataForm){
+        var pagina = "../controller/almacenar_curso.php";
+        $.ajax({
+			    contentType: false,
+			    processData: false,
+			      // la URL para la petición
+			      url : pagina,
+			      // la información a enviar
+			      // (también es posible utilizar una cadena de datos)
+			      data : dataForm,
+			      // especifica si será una petición POST o GET
+			      type : 'POST',
+			      // el tipo de información que se espera de respuesta
+			      dataType : 'json',
+			      // código a ejecutar si la petición es satisfactoria;
+			      // la respuesta es pasada como argumento a la función
+			      success : function(json) {
+                      //console.log(json);
+                      alert("¡Curso guardado satisfactoriamente!");
+                      location.href ="CursosAdministrador.html";
+			      },
+			      error : function(xhr, status) {
+							alert("Existió un error en el servidor...");
+			      },
+			      // código a ejecutar sin importar si la petición falló o no
+			      complete : function(xhr, status) {
+			          //alert('Petición realizada');
+			      }
+			  });//*/
+    }
+    
+    function cancelar(){
+        location.href ="CursosAdministrador.html";
     }
     
     function autollenado(){
