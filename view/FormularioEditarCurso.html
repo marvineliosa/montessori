@@ -163,12 +163,12 @@
                         <div class="col-lg-2">
                             <div class="btn-row">
                           <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default" onchange="SelectImagen()">
+                            <label class="btn btn-default" onchange="SelectImagen()" id="select_imagen">
                                                   <input id="input_imagen" type="radio" name="options"> Imágen
                                               </label>
-                            <label class="btn btn-default" onchange="SelectVideo()">
-                                                  <input type="radio" name="options"id="input_video"> Vídeo
-                                              </label>
+                            <label class="btn btn-default" onchange="SelectVideo()" id="select_video">
+                                <input type="radio" name="options"id="input_video" > Vídeo
+                            </label>
                           </div>
                         </div>
                         </div>
@@ -186,17 +186,15 @@
                         <input class="form-control" id="input_url_video" name="titulo" minlength="3" type="text" placeholder="URL del Vídeo" required />
                       </div>
                         <div class="col-lg-2">
-                        <button type="button" class="btn btn-info" onclick="probarVideo()" id="btn_url_video">
+                            <button type="button" class="btn btn-info" onclick="probarVideo()" id="btn_url_video">
                                 <span class="fa fa-image"></span>  Probar Video
-                        </button>    
+                            </button>    
                         </div>
                     </div>
                     </div>
-                      
-                      <div class="form-group " align="center" id="div_video">
+                    <div class="form-group " align="center" id="div_video">
                       
                     </div>
-                      
                     <div class="form-group ">
                       <label for="ccomment" class="control-label col-lg-2">Objetivo <span class="required">*</span></label>
                       <div class="col-lg-10">
@@ -789,7 +787,7 @@
                     
                     <div class="form-group">
                       <div class="col-lg-offset-2 col-lg-10">
-                        <button class="btn btn-success" onclick="ObtenerDatos()">Guardar Curso</button>
+                        <button class="btn btn-success" onclick="ObtenerDatos() ">Guardar Curso</button>
                         <button class="btn btn-danger" type="button" onclick="cancelar()">Cancelar</button>
                       </div>
                     </div>
@@ -829,6 +827,8 @@
   <!--custome script for all page-->
   <script type="text/javascript" src="../js/jquery.validate.min.js"></script>
   <script src="../js/form-validation-script.js"></script>
+    <!-- funciones get -->
+    <script src="../js/my_js/get.js"></script>
 
 </body>
 
@@ -837,8 +837,15 @@
 <script>
     //funciones al cargar la pagina
     window.onload=function() {
-			autollenado();
+		//autollenado();
+        obtenCurso();
     }
+    var usuario="";
+    var categoria="";
+    $( window ).load(function() {
+        //alert("epale");
+        obtenerUsuario();
+    });
     //metodos
     function CrearCurso(){
         location.href ="FormularioCrearCurso.html";
@@ -1224,6 +1231,8 @@
             //***************************************************
             //formulario
             var dataForm = new FormData();
+            var id_curso_actual=parseInt(vars['curso']);
+            dataForm.append("id_curso_viejo",id_curso_actual);
             dataForm.append("titulo",titulo);
 
             if(imagen){
@@ -1434,15 +1443,10 @@
     function fake_submit(){
         //alert("EPALE QUE PASO??");
         return false;
-        //onclick="ObtenerDatos()"
-        //ObtenerDatos();
     }
-    function nana(){
-        //alert("Mandado");
-        return false;
-    }
+    
     function Almacenar(dataForm){
-        var pagina = "../controller/almacenar_curso.php";
+        var pagina = "../controller/actualiza_curso.php";
         $.ajax({
 			    contentType: false,
 			    processData: false,
@@ -1476,108 +1480,56 @@
         location.href ="CursosAdministrador.html";
     }
     
-    function autollenado(){
-        $("#titulo_curso").val("Titulo del curso");
-        $("#objetivo").val("Objetivo del curso");
-        $("#descripcion").val("Descripcion del curso");
+    function autollenado(json){
+        $("#titulo_curso").val(json['curso']['titulo']);
+        if(json['video']){
+            $("#select_video").click();
+            $("#input_url_video").val(json['video']['url']);
+        }else if(json['imagen']){
+            $("#select_imagen").click();
+        }else{
+            
+        }
+        $("#objetivo").val(json['curso']['objetivo']);
+        $("#descripcion").val(json['curso']['descripcion']);
         //Ejemplo
-        $("#ejemplo").val("Pregunta de ejemplo");
-        $("#r1_correcta_ejemplo").val("Respuesta correcta del ejemplo");
-        $("#r2_incorrecta_ejemplo").val("Respuesta incorrecta 1 ejemplo");
-        $("#r3_incorrecta_ejemplo").val("Respuesta incorrecta 2 ejemplo");
-        $("#r4_incorrecta_ejemplo").val("Respuesta incorrecta 3 ejemplo");
-        $("#retroalimentacion_ejemplo").val("Retroalimentacion ejemplo");
+        $("#ejemplo").val(json['ejemplo']['pregunta']);
+        $("#r1_correcta_ejemplo").val(json['ejemplo']['respuestas'][0]['texto_respuesta']);
+        $("#r2_incorrecta_ejemplo").val(json['ejemplo']['respuestas'][1]['texto_respuesta']);
+        $("#r3_incorrecta_ejemplo").val(json['ejemplo']['respuestas'][2]['texto_respuesta']);
+        $("#r4_incorrecta_ejemplo").val(json['ejemplo']['respuestas'][3]['texto_respuesta']);
+        $("#retroalimentacion_ejemplo").val(json['ejemplo']['retroalimentacion']);
         
         //EJERCICIOS
-        //Pregunta 1
-        $("#p_ejercicio_1").val("Pregunta ejercicio 1");
-        $("#respuesta1_p_e1").val("Respuesta correcta ej1");
-        $("#retroalimentacion_r1_e1").val("Retroalimentacion 1 ej1");
-        $("#respuesta2_p_e1").val("Respuesta incorrecta 1 ej1");
-        $("#retroalimentacion_r2_e1").val("Retroalimentacion 2 ej1");
-        $("#respuesta3_p_e1").val("Respuesta incorrecta 2 ej1");
-        $("#retroalimentacion_r3_e1").val("Retroalimentacion 3 ej1");
-        $("#respuesta4_p_e1").val("Respuesta incorrecta 3 ej1");
-        $("#retroalimentacion_r4_e1").val("Retroalimentacion 4 ej1");
-        //Pregunta 2
-        $("#p_ejercicio_2").val("Pregunta ejercicio 2");
-        $("#respuesta1_p_e2").val("Respuesta correcta ej2");
-        $("#retroalimentacion_r1_e2").val("Retroalimentacion 1 ej2");
-        $("#respuesta2_p_e2").val("Respuesta incorrecta 1 ej2");
-        $("#retroalimentacion_r2_e2").val("Retroalimentacion 2 ej2");
-        $("#respuesta3_p_e2").val("Respuesta incorrecta 2 ej2");
-        $("#retroalimentacion_r3_e2").val("Retroalimentacion 3 ej2");
-        $("#respuesta4_p_e2").val("Respuesta incorrecta 3 ej2");
-        $("#retroalimentacion_r4_e2").val("Retroalimentacion 4 ej2");
-        //Pregunta 3
-        $("#p_ejercicio_3").val("Pregunta ejercicio 3");
-        $("#respuesta1_p_e3").val("Respuesta correcta ej3");
-        $("#retroalimentacion_r1_e3").val("Retroalimentacion 1 ej3");
-        $("#respuesta2_p_e3").val("Respuesta incorrecta 1 ej3");
-        $("#retroalimentacion_r2_e3").val("Retroalimentacion 2 ej3");
-        $("#respuesta3_p_e3").val("Respuesta incorrecta 2 ej3");
-        $("#retroalimentacion_r3_e3").val("Retroalimentacion 3 ej3");
-        $("#respuesta4_p_e3").val("Respuesta incorrecta 3 ej3");
-        $("#retroalimentacion_r4_e3").val("Retroalimentacion 4 ej3");
-        //Pregunta 4
-        $("#p_ejercicio_4").val("Pregunta ejercicio 4");
-        $("#respuesta1_p_e4").val("Respuesta correcta ej4");
-        $("#retroalimentacion_r1_e4").val("Retroalimentacion 1 ej4");
-        $("#respuesta2_p_e4").val("Respuesta incorrecta 1 ej4");
-        $("#retroalimentacion_r2_e4").val("Retroalimentacion 2 ej4");
-        $("#respuesta3_p_e4").val("Respuesta incorrecta 2 ej4");
-        $("#retroalimentacion_r3_e4").val("Retroalimentacion 3 ej4");
-        $("#respuesta4_p_e4").val("Respuesta incorrecta 3 ej4");
-        $("#retroalimentacion_r4_e4").val("Retroalimentacion 4 ej4");
-        //Pregunta 2
-        $("#p_ejercicio_5").val("Pregunta ejercicio 5");
-        $("#respuesta1_p_e5").val("Respuesta correcta ej5");
-        $("#retroalimentacion_r1_e5").val("Retroalimentacion 1 ej5");
-        $("#respuesta2_p_e5").val("Respuesta incorrecta 1 ej5");
-        $("#retroalimentacion_r2_e5").val("Retroalimentacion 2 ej5");
-        $("#respuesta3_p_e5").val("Respuesta incorrecta 2 ej5");
-        $("#retroalimentacion_r3_e5").val("Retroalimentacion 3 ej5");
-        $("#respuesta4_p_e5").val("Respuesta incorrecta 3 ej5");
-        $("#retroalimentacion_r4_e5").val("Retroalimentacion 4 ej5");
-        //Evaluacion
-        //pregunta 1
-        $("#p_evaluacion_1").val("Pregunta evaluacion 1");
-        $("#r1_correcta_evaluacion_1").val("Respuesta correcta eval1");
-        $("#r2_incorrecta_evaluacion_1").val("Respuesta incorrecta 1 eval1");
-        $("#r3_incorrecta_evaluacion_1").val("Respuesta incorrecta 2 eval1");
-        $("#r4_incorrecta_evaluacion_1").val("Respuesta incorrecta 3 eval1");
-        //pregunta 2
-        $("#p_evaluacion_2").val("Pregunta evaluacion 2");
-        $("#r1_correcta_evaluacion_2").val("Respuesta correcta eval2");
-        $("#r2_incorrecta_evaluacion_2").val("Respuesta incorrecta 1 eval2");
-        $("#r3_incorrecta_evaluacion_2").val("Respuesta incorrecta 2 eval2");
-        $("#r4_incorrecta_evaluacion_2").val("Respuesta incorrecta 3 eval2");
-        //pregunta 3
-        $("#p_evaluacion_3").val("Pregunta evaluacion 3");
-        $("#r1_correcta_evaluacion_3").val("Respuesta correcta eval3");
-        $("#r2_incorrecta_evaluacion_3").val("Respuesta incorrecta 1 eval3");
-        $("#r3_incorrecta_evaluacion_3").val("Respuesta incorrecta 2 eval3");
-        $("#r4_incorrecta_evaluacion_3").val("Respuesta incorrecta 3 eval3");
-        //pregunta 4
-        $("#p_evaluacion_4").val("Pregunta evaluacion 4");
-        $("#r1_correcta_evaluacion_4").val("Respuesta correcta eval4");
-        $("#r2_incorrecta_evaluacion_4").val("Respuesta incorrecta 1 eval4");
-        $("#r3_incorrecta_evaluacion_4").val("Respuesta incorrecta 2 eval4");
-        $("#r4_incorrecta_evaluacion_4").val("Respuesta incorrecta 3 eval4");
-        //pregunta 5
-        $("#p_evaluacion_5").val("Pregunta evaluacion 5");
-        $("#r1_correcta_evaluacion_5").val("Respuesta correcta eval5");
-        $("#r2_incorrecta_evaluacion_5").val("Respuesta incorrecta 1 eval5");
-        $("#r3_incorrecta_evaluacion_5").val("Respuesta incorrecta 2 eval5");
-        $("#r4_incorrecta_evaluacion_5").val("Respuesta incorrecta 3 eval5");
+        //preguntas ejercicios
+        for(i=0;i<5;i++){
+            var id_etiqueta = "#p_ejercicio_" + (i+1);
+            $(id_etiqueta).val(json['ejercicios']['preguntas'][i]['descripcion']);
+            //respuestas
+            for(j=0;j<4;j++){
+                var id_respuesta = "#respuesta"+(j+1)+"_p_e"+(i+1);
+                var id_retroalimentacion = "#retroalimentacion_r"+(j+1)+"_e"+(i+1);
+                $(id_respuesta).val(json['ejercicios']['respuestas'][i][j]['texto_respuesta']);
+                $(id_retroalimentacion).val(json['ejercicios']['respuestas'][i][j]['retroalimentacion']);
+            }
+        }
         
+        //Evaluacion
+        //preguntas evaluaciones
+        for(i=0;i<5;i++){
+            var id_etiqueta = "#p_evaluacion_" + (i+1);
+            $(id_etiqueta).val(json['evaluacion']['preguntas'][i]['descripcion']);
+            //respuestas
+            for(j=0;j<4;j++){
+                if(j==0){//en caso de que es la correcta
+                    var id_respuesta = "#r"+(j+1)+"_correcta_evaluacion_"+(i+1);
+                }else{//respuestas incorrectas
+                    var id_respuesta = "#r"+(j+1)+"_incorrecta_evaluacion_"+(i+1);
+                }
+                $(id_respuesta).val(json['evaluacion']['respuestas'][i][j]['texto_respuesta']);
+            }//*/
+        }
     }
-    var usuario="";
-    var categoria="";
-    $( window ).load(function() {
-        //alert("epale");
-        obtenerUsuario();
-    });
 
     function obtenerUsuario(){
         var exito = false;
@@ -1630,6 +1582,49 @@
 			  });//*/
                 return (exito?true:false);
 			}
+    
+    function obtenCurso(){
+        id_curso=parseInt(vars['curso']);
+		if(id_curso){//si el id enviado por get es numerico
+			var dataForm = new FormData();
+		  dataForm.append('curso',id_curso);
+		  var pagina = "../controller/trae_curso_completo.php";
+		  $.ajax({
+		    contentType: false,
+		    processData: false,
+		      // la URL para la petición
+		      url : pagina,
+		      // la información a enviar
+		      // (también es posible utilizar una cadena de datos)
+		      data : dataForm,
+		      // especifica si será una petición POST o GET
+		      type : 'POST',
+		      // el tipo de información que se espera de respuesta
+		      dataType : 'json',
+		      // código a ejecutar si la petición es satisfactoria;
+		      // la respuesta es pasada como argumento a la función
+		      success : function(json) {
+		        //console.log(json);
+		        if(json['exito']==true){
+                    autollenado(json);              
+		        }else{
+					//alert("No se ha encontrado datos")
+		        }
+		      },
+		      error : function(xhr, status) {
+					alert("Existió un error en el servidor...");
+		      },
+		      // código a ejecutar sin importar si la petición falló o no
+		      complete : function(xhr, status) {
+		          //alert("finalizado!");
+		      }
+		  });//*/
+		}else{
+			alert("No se ha encontrado datos")
+			//location.href ="principal_usuario.html";
+		}
+	}
+    
     function probarVideo(){
         var url = $("#input_url_video").val();
         url=cambiarUrlVideo(url);
@@ -1643,6 +1638,5 @@
         url=url.replace('watch?v=', 'embed/');
         return url;
     }
-    
     
 </script>

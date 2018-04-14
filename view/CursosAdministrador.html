@@ -8,6 +8,8 @@
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
+  <!-- Page level plugin CSS-->
+  <link href="../js/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
   <title>Blank | Creative - Bootstrap 3 Responsive Admin Template</title>
 
@@ -142,23 +144,17 @@
               <header class="panel-heading">
               </header>
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="tabla_cursos">
                   <thead>
                     <tr>
                       <th>Número</th>
-                      <th>Nombre</th>
-                      <th>Fecha</th>
+                      <th>Título</th>
+                      <th>Objetivo</th>
+                      <th>Descripción</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                    </tr>
-                    
+                  <tbody id="cuerpo_tabla">
                   </tbody>
                 </table>
               </div>
@@ -167,6 +163,28 @@
           </div>
         </div>
         <!-- page end-->
+          <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" align="center">
+                    <h3>¿Esta seguro de querer eliminar este curso?</h3>
+                    <input type="text" value="" style="display: none" id="input_valor"/>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="elimina()">Estoy Seguro</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <!-- modales -->
       </section>
     </section>
     <!--main content end-->
@@ -191,6 +209,8 @@
   <!--custome script for all page-->
   <script src="../js/scripts.js"></script>
   <script src="../js/gestion_cuenta.js"></script>
+    <script src="../js/datatables/jquery.dataTables.js"></script>
+    <script src="../js/datatables/dataTables.bootstrap4.js"></script>
 
 </body>
 
@@ -200,6 +220,164 @@
     function CrearCurso(){
         location.href ="FormularioCrearCurso.html";
     }
+    var usuario="";
+    var categoria="";
+    $( window ).load(function() {
+        //alert("epale");
+        obtenerUsuario();
+        obtenerCursos();
+    });
+
+    function obtenerUsuario(){
+        var exito = false;
+				//alert(usr);
+                var dataForm = new FormData();
+			  dataForm.append('user','user');
+			  var pagina = "../controller/obtener_usuario.php";
+			  $.ajax({
+			    contentType: false,
+			    processData: false,
+			      // la URL para la petición
+			      url : pagina,
+			      // la información a enviar
+			      // (también es posible utilizar una cadena de datos)
+			      data : dataForm,
+			      // especifica si será una petición POST o GET
+			      type : 'POST',
+			      // el tipo de información que se espera de respuesta
+			      dataType : 'json',
+			      // código a ejecutar si la petición es satisfactoria;
+			      // la respuesta es pasada como argumento a la función
+			      success : function(json) {
+			        //console.log(json);
+			        if(json['exito']==true){
+                        if(json['categoria'].localeCompare("3")!=0){
+                            alert("No se ha iniciado ninguna sesión");
+				            location.href ="../index.html";
+                        }else{
+                            //console.log(json['usuario']);
+                            //console.log(json['categoria']+":"+typeof(json['categoria']));
+                            usuario=json['usuario'];
+                            categoria=json['categoria'];
+                        }
+				        //alert("Registro exitoso");
+			        }else{
+                            //alert("No se ha iniciado ninguna sesión");
+				            location.href ="../index.html";
+								//alert(json['error']);
+			          //document.getElementById('texto_tabla').innerHTML = json['error'];
+			        }
+			      },
+			      error : function(xhr, status) {
+							alert("Existió un error en el servidor...");
+				            //location.href ="../index.html";
+			      },
+			      // código a ejecutar sin importar si la petición falló o no
+			      complete : function(xhr, status) {
+			          //alert('Petición realizada');
+			      }
+			  });//*/
+                return (exito?true:false);
+			}
+    function obtenerCursos(){
+        var dataForm = new FormData();
+        dataForm.append("usuario",usuario);
+        var pagina = "../controller/trae_cursos.php";
+        $.ajax({
+			    contentType: false,
+			    processData: false,
+			      // la URL para la petición
+			      url : pagina,
+			      // la información a enviar
+			      // (también es posible utilizar una cadena de datos)
+			      data : dataForm,
+			      // especifica si será una petición POST o GET
+			      type : 'POST',
+			      // el tipo de información que se espera de respuesta
+			      dataType : 'json',
+			      // código a ejecutar si la petición es satisfactoria;
+			      // la respuesta es pasada como argumento a la función
+			      success : function(json) {
+                      //console.log(json);
+                      for(var i=0;i<json["total"];i++){//recorremos los tramites
+                          $("#tabla_cursos").append(
+                              "<tr id=curso-'"+json['cursos'][i]['id_curso']+"'>"+
+                              "<td>"+json["cursos"][i]["id_curso"]+
+                              "</td><td>"+json["cursos"][i]["titulo"]+
+                              "</td><td>"+json["cursos"][i]["objetivo"]+
+                              "</td><td>"+json["cursos"][i]["descripcion"].substr(0,40)+
+                              "</td><td>"+'<a href="http://localhost/montessori/view/FormularioEditarCurso.html?curso='+json["cursos"][i]["id_curso"]+'">Editar</a>'+
+                              ' '+'<a href="#exampleModal" onclick="eliminarCurso('+json['cursos'][i]['id_curso']+')">Eliminar</a>'+
+                              "</td>"+
+                              "</tr>"
+                          );
+                      }
+                      $("#tabla_cursos").DataTable(
+                          {
+                            searching:false,
+							lengthChange: false,
+							info:false,
+							pageLength: 10,
+							language:
+								{
+									emptyTable	:	"No hay datos para mostrar en la tabla",
+									zeroRecords	:	"No hay datos para mostrar en la tabla",
+									paginate:
+									{
+										"first":      "Primero",
+										"last":       "Ultimo",
+										"next":       "Siguiente",
+										"previous":   "Anterior"
+									}
+								}
+				            });//*/
+			      },
+			      error : function(xhr, status) {
+							alert("Existió un error en el servidor...");
+			      },
+			      // código a ejecutar sin importar si la petición falló o no
+			      complete : function(xhr, status) {
+			          //alert('Petición realizada');
+			      }
+			  });//*/
+    }
     
+    function eliminarCurso(id){
+        //alert(id);
+        $("#input_valor").val(id);
+        $("#exampleModal").modal();
+    }
+    function elimina(){
+        var id = $("#input_valor").val();
+        var dataForm = new FormData();
+        dataForm.append("id_curso",id);
+        var pagina = "../controller/eliminar_curso.php";
+        $.ajax({
+			    contentType: false,
+			    processData: false,
+			      // la URL para la petición
+			      url : pagina,
+			      // la información a enviar
+			      // (también es posible utilizar una cadena de datos)
+			      data : dataForm,
+			      // especifica si será una petición POST o GET
+			      type : 'POST',
+			      // el tipo de información que se espera de respuesta
+			      dataType : 'json',
+			      // código a ejecutar si la petición es satisfactoria;
+			      // la respuesta es pasada como argumento a la función
+			      success : function(json) {
+                      //console.log(json);
+                      location.reload(true);
+			      },
+			      error : function(xhr, status) {
+							alert("Existió un error en el servidor...");
+			      },
+			      // código a ejecutar sin importar si la petición falló o no
+			      complete : function(xhr, status) {
+			          //alert('Petición realizada');
+			      }
+			  });//*/
+    }
     
 </script>

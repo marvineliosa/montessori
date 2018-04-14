@@ -9,6 +9,7 @@
   }
   $data = array(
     'usuario' => ($exito?$_SESSION['usuario']:""),
+    'categoria' => ($exito?$_SESSION['categoria']:""),
     "exito" => $exito
     );
   echo json_encode($data);

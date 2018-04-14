@@ -5,6 +5,7 @@
     //$titulo = $_REQUEST['titulo'];
     //print_r($_REQUEST);
 //----------Informacion del curso
+    $id_curso_viejo = $_REQUEST['id_curso_viejo'];
     $titulo = $_REQUEST['titulo'];
     //obtencion de la imagen si es que hay
     $simagen_c = $_REQUEST['simagen_c'];
@@ -318,7 +319,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_ejercicios_respuestas = "INSERT INTO rel_ejercicios_respuestas(id_pregunta_ejercicio,id_respuesta_ejercicio)values($id_ejercicio1,$id_r4_ejercicio1)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//
     
     //ejercicio 2
     $insert_ejercicio2 = "INSERT INTO pregunta_ejercicio(descripcion)values('$ejercicio_2')";
@@ -380,7 +381,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_ejercicios_respuestas = "INSERT INTO rel_ejercicios_respuestas(id_pregunta_ejercicio,id_respuesta_ejercicio)values($id_ejercicio2,$id_r4_ejercicio2)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//
 
     //ejercicio 3
     $insert_ejercicio3 = "INSERT INTO pregunta_ejercicio(descripcion)values('$ejercicio_3')";
@@ -442,7 +443,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_ejercicios_respuestas = "INSERT INTO rel_ejercicios_respuestas(id_pregunta_ejercicio,id_respuesta_ejercicio)values($id_ejercicio3,$id_r4_ejercicio3)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//
 
     //ejercicio 4
     $insert_ejercicio4 = "INSERT INTO pregunta_ejercicio(descripcion)values('$ejercicio_4')";
@@ -504,7 +505,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_ejercicios_respuestas = "INSERT INTO rel_ejercicios_respuestas(id_pregunta_ejercicio,id_respuesta_ejercicio)values($id_ejercicio4,$id_r4_ejercicio4)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//
 
     //ejercicio 5
     $insert_ejercicio5 = "INSERT INTO pregunta_ejercicio(descripcion)values('$ejercicio_5')";
@@ -566,7 +567,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_ejercicios_respuestas = "INSERT INTO rel_ejercicios_respuestas(id_pregunta_ejercicio,id_respuesta_ejercicio)values($id_ejercicio5,$id_r4_ejercicio5)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_ejercicios_respuestas);//
     //fin de los ejercicios ::´D
 
 //Evalueciones
@@ -628,7 +629,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_evaluacion_respuestas = "INSERT INTO rel_evaluacion_respuestas(id_pregunta_evaluacion,id_respuesta_evaluacion)values($id_evaluacion1,$id_r4_evaluacion1)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//
     
 
     //Evaluacion 2
@@ -689,7 +690,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_evaluacion_respuestas = "INSERT INTO rel_evaluacion_respuestas(id_pregunta_evaluacion,id_respuesta_evaluacion)values($id_evaluacion2,$id_r4_evaluacion2)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//
     
     //Evaluacion 3
     $insert_evaluacion3 = "INSERT INTO pregunta_evaluacion(descripcion)values('$evaluacion3')";
@@ -749,7 +750,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_evaluacion_respuestas = "INSERT INTO rel_evaluacion_respuestas(id_pregunta_evaluacion,id_respuesta_evaluacion)values($id_evaluacion3,$id_r4_evaluacion3)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//
     
     //Evaluacion 4
     $insert_evaluacion4 = "INSERT INTO pregunta_evaluacion(descripcion)values('$evaluacion4')";
@@ -809,7 +810,7 @@
     //relacion entre esta respuesta y el ejercicio
     $insert_rel_evaluacion_respuestas = "INSERT INTO rel_evaluacion_respuestas(id_pregunta_evaluacion,id_respuesta_evaluacion)values($id_evaluacion4,$id_r4_evaluacion4)";
     //echo $insert_curso;
-    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//*/
+    $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//
     
     //Evaluacion 5
     $insert_evaluacion5 = "INSERT INTO pregunta_evaluacion(descripcion)values('$evaluacion5')";
@@ -870,12 +871,15 @@
     $insert_rel_evaluacion_respuestas = "INSERT INTO rel_evaluacion_respuestas(id_pregunta_evaluacion,id_respuesta_evaluacion)values($id_evaluacion5,$id_r4_evaluacion5)";
     //echo $insert_curso;
     $exito_rel_ejercicio_respuesta = $mysqli->query($insert_rel_evaluacion_respuestas);//*/
-
+    
+    $query_delete = "DELETE FROM curso WHERE id_curso = $id_curso_viejo";
+    $exito_elimina = $mysqli->query($query_delete);
     $fl = false;
     $data = array(
         "exito" => $fl,
         //"data" => $_REQUEST
-        "insert_curso" => $insert_curso
+        "insert_curso" => $insert_curso,
+        "curso_viejo" => $id_curso_viejo
         );
       echo json_encode($data);//*/
 ?>

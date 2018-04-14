@@ -22,6 +22,8 @@
   <!-- Custom styles -->
   <link href="../css/style.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet" />
+  <!-- Page level plugin CSS-->
+  <link href="../js/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
   <!--[if lt IE 9]>
@@ -137,25 +139,17 @@
                 Lista de cursos disponibles
               </header>
               <div class="table-responsive">
-                <table class="table">
+                <table class="table" id="tabla_cursos">
                   <thead>
                     <tr>
                       <th>Número</th>
-                      <th>Nombre</th>
-                      <th>Fecha</th>
+                      <th>Título</th>
+                      <th>Fecha Cursado</th>
                       <th>Calificación</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                      <td>Table cell</td>
-                    </tr>
-                    
+                  <tbody id="cuerpo_tabla">
                   </tbody>
                 </table>
               </div>
@@ -188,13 +182,141 @@
   <!--custome script for all page-->
   <script src="../js/scripts.js"></script>
   <script src="../js/gestion_cuenta.js"></script>
+  <script src="../js/datatables/jquery.dataTables.js"></script>
+  <script src="../js/datatables/dataTables.bootstrap4.js"></script>
 
 </body>
 
 </html>
 
 <script>
+function CrearCurso(){
+        location.href ="FormularioCrearCurso.html";
+    }
+    var usuario="";
+    var categoria="";
+    $( window ).load(function() {
+        //alert("epale");
+        obtenerUsuario();
+    });
 
+    function obtenerUsuario(){
+        var exito = false;
+				//alert(usr);
+                var dataForm = new FormData();
+			  dataForm.append('user','user');
+			  var pagina = "../controller/obtener_usuario.php";
+			  $.ajax({
+			    contentType: false,
+			    processData: false,
+			      // la URL para la petición
+			      url : pagina,
+			      // la información a enviar
+			      // (también es posible utilizar una cadena de datos)
+			      data : dataForm,
+			      // especifica si será una petición POST o GET
+			      type : 'POST',
+			      // el tipo de información que se espera de respuesta
+			      dataType : 'json',
+			      // código a ejecutar si la petición es satisfactoria;
+			      // la respuesta es pasada como argumento a la función
+			      success : function(json) {
+			        //console.log(json);
+			        if(json['exito']==true){
+                        if(json['categoria'].localeCompare("2")!=0){
+                            alert("Sin permisos para esta vista");
+				            location.href ="../index.html";
+                        }else{
+                            //console.log(json['usuario']);
+                            //console.log(json['categoria']+":"+typeof(json['categoria']));
+                            usuario=json['usuario'];
+                            categoria=json['categoria'];
+                            obtenerCursos();
+                        }
+				        //alert("Registro exitoso");
+			        }else{
+                            //alert("No se ha iniciado ninguna sesión");
+				            location.href ="../index.html";
+								//alert(json['error']);
+			          //document.getElementById('texto_tabla').innerHTML = json['error'];
+			        }
+			      },
+			      error : function(xhr, status) {
+							alert("Existió un error en el servidor...");
+				            //location.href ="../index.html";
+			      },
+			      // código a ejecutar sin importar si la petición falló o no
+			      complete : function(xhr, status) {
+			          //alert('Petición realizada');
+			      }
+			  });//*/
+                return (exito?true:false);
+			}
+    function obtenerCursos(){
+        //alert(usuario);
+        var dataForm = new FormData();
+        dataForm.append("usuario",usuario);
+        var pagina = "../controller/trae_cursos_profesor.php";
+        $.ajax({
+		   contentType: false,
+		   processData: false,
+		     // la URL para la petición
+		     url : pagina,
+		     // la información a enviar
+		     // (también es posible utilizar una cadena de datos)
+		     data : dataForm,
+		     // especifica si será una petición POST o GET
+		     type : 'POST',
+		     // el tipo de información que se espera de respuesta
+		     dataType : 'json',
+		     // código a ejecutar si la petición es satisfactoria;
+		     // la respuesta es pasada como argumento a la función
+		     success : function(json) {
+                  //console.log(json);
+                  for(var i=0;i<json["total"];i++){//recorremos los tramites
+                      var vinculo = "<a href='PresentarCurso.html?curso="+json["cursos"][i]["id_curso"]+"'>CURSAR</a>";
+                      $("#tabla_cursos").append(
+                          "<tr id=curso-'"+json['cursos'][i]['id_curso']+"'>"+
+                          "<td>"+json["cursos"][i]["id_curso"]+
+                          "</td><td>"+json["cursos"][i]["titulo"]+
+                          "</td><td>"+((json['relacion'][i])?json["relacion"][i]["fecha"].substr(0,10):"")+
+                          "</td><td>"+((json['relacion'][i])?json["relacion"][i]["calificacion"]:"")+
+                          "</td><td>"+((json['relacion'][i])?((json["relacion"][i]["estatus"]=="abierto")?vinculo:""):vinculo)+
+                          "</td>"+
+                          "</tr>"
+                          //<a href='ver_cuento.html?id="+json['datos']['id_cuento']+"'>
+                      );
+                  }
+                  $("#tabla_cursos").DataTable(
+                      {
+                        searching:false,
+                        lengthChange: false,
+                        info:false,
+                        pageLength: 10,
+                        language:
+                            {
+                                emptyTable	:	"No hay datos para mostrar en la tabla",
+                                zeroRecords	:	"No hay datos para mostrar en la tabla",
+                                paginate:
+                                {
+                                    "first":      "Primero",
+                                    "last":       "Ultimo",
+                                    "next":       "Siguiente",
+                                    "previous":   "Anterior"
+                                }
+                            }
+		            });//*/
+		     },
+		     error : function(xhr, status) {
+					alert("Existió un error en el servidor...");
+		     },
+		     // código a ejecutar sin importar si la petición falló o no
+		     complete : function(xhr, status) {
+		         //alert('Petición realizada');
+		     }
+		 });//*/
+    }
+    
     
     
 </script>
