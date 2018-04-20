@@ -66,7 +66,7 @@
 
       <div class="top-nav notification-row">
         <!-- notificatoin dropdown start-->
-        
+
       </div>
     </header>
     <!--header end-->
@@ -129,7 +129,7 @@
             </ol>
           </div>
         </div>
-          
+
           <!--tab nav start-->
           <section class="panel">
               <header class="panel-heading tab-bg-primary ">
@@ -152,7 +152,7 @@
                 <div class="tab-content">
                   <div id="Descripcion" class="tab-pane active">
                     <div class="container" style="text-align: center;">
-                      <h1 id="titulo_curso"></h1>  
+                      <h1 id="titulo_curso"></h1>
                     </div>
                     <div id="video_curso" align="center">
                       <!--<iframe width="660" height="415" src="https://www.youtube.com/embed/sAUNzc6QDLE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
@@ -172,10 +172,10 @@
                     <p>A continuación te mostraremos cómo resolver la sección 3 que pertenece al los ejercicios.</p>
                     <br>
                     <p id="pregunta_ejemplo"></p>
-                      
-                     
-                      
-                    
+
+
+
+
                     <div class="form-group">
                         <div class="row" align="center">
                             <div class="col-md-12">
@@ -320,11 +320,13 @@
 		        //console.log(json);
 		        if(json['exito']==true){
                     $("#titulo_curso").text(json['curso']['titulo']);
-                    if(!json['imagen']){
-                        $("#video_curso").html('<iframe width="660" height="415" src="'+json['video']['url']+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
+                    if(json['imagen']){
+                        //$("#video_curso").html('<iframe width="660" height="415" src="'+json['video']['url']+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
                         //$("#video_curso").html('<h1>aqui va un video... si tuviera uno!</h1>');
-                    }else{
+                    }else if(json['video']){
                         $("#video_curso").html('<h1>aqui va la imagen</h1>');
+                    }else{
+                      
                     }
                     $("#objetivo_curso").text(json['curso']['objetivo']);
                     $("#descripcion_curso").text(json['curso']['descripcion']);
@@ -341,10 +343,10 @@
                     for(var i = 0; i<4; i++){
                         var v1 = json['ejemplo']['respuestas'][i]['estatus'];
                         var input1 = '<input type="radio" name="optionsRadios" id="radio_ejemplo'+(i+1)+'" value="'+v1+'" onclick="RespuestaEjemplo(this)" checked>'+json['ejemplo']['respuestas'][i]['texto_respuesta'];
-                        
+
                         var input = '<input type="radio" name="optionsRadios" id="radio_ejemplo'+(i+1)+'" value="'+v1+'" onclick="RespuestaEjemplo(this)">'+json['ejemplo']['respuestas'][i]['texto_respuesta'];
                         var id_label = "#r"+(i+1)+"_ejemplo";
-                        
+
                         if(i==0){
                             $(id_label).html(input1);
                             //console.log(input1);
@@ -354,8 +356,8 @@
                         }
                     }//fin del for*/
                     $("#retroalimentacion_ejemplo").text(json['ejemplo']['retroalimentacion']);
-                    
-                    
+
+
                     //llenando los ejercicios
                     $("#Ejercicios").append("<h1>Ejercicios</h1><h4>Bienvenido al área de ejercicios, tal como se te mostró anteriormente, aquí podrás practicar todo lo visto en el curso. No te preocupes si fallas, esta aún no es la evaluación.</h4>");
                     for(i=0;i<5;i++){
@@ -377,7 +379,7 @@
                             var estatus = json['ejercicios']['respuestas'][i][j]['estatus'];
                             var retroalimentacion = json['ejercicios']['respuestas'][i][j]['retroalimentacion'];
                             var input_r1 = '<input type="radio" name="optionsEjercicio'+(i+i)+'" id="'+estatus+'" value="'+retroalimentacion+'" onclick="RespuestaEjercicio(this)">'+json['ejercicios']['respuestas'][i][j]['texto_respuesta'];
-                                                        
+
                             $("#Ejercicios").append(        '<div class="col-md-6">'+
                                                               '<div class="radio">'+
                                                                 '<label id="r'+j+'_ejercicio'+i+'">'+
@@ -391,8 +393,8 @@
                                                     '</div>'+
                                                 '</div><!-- Fin form group -->'
                                                 );
-                        
-                        
+
+
                     }//fin del for principal
                     $("#Ejercicios").append('<div class="form-group">'+
                                               '<div class="row">'+
@@ -403,12 +405,12 @@
                                                 '</div>'+
                                             '</div>'
                                             );//*/
-                    
+
                     //-----------------------------------------------------------------------------------------------------------------------
                     //area de evaluación
-                    $("#Evaluacion").append("<h1>Evaluación</h1><h4>Ahora te encuentras en el area de evaluación, en este panel encontrarás preguntas relacionadas con el tema que aprendiste en este curso. Esta vez no te daremos retroalimentación al seleccionar una pregunta así que da lo mejor de ti.</h4>" 
+                    $("#Evaluacion").append("<h1>Evaluación</h1><h4>Ahora te encuentras en el area de evaluación, en este panel encontrarás preguntas relacionadas con el tema que aprendiste en este curso. Esta vez no te daremos retroalimentación al seleccionar una pregunta así que da lo mejor de ti.</h4>"
                                     );
-                    
+
                     //llenado de respuestas
                     for(i=0;i<5;i++){
                         $("#Evaluacion").append("<p>"+json['evaluacion']['preguntas'][i]['descripcion']+"</p>");//pregunta
@@ -429,7 +431,7 @@
                             var estatus = json['evaluacion']['respuestas'][i][j]['estatus'];
                             //var retroalimentacion = json['evaluacion']['respuestas'][i][j]['retroalimentacion'];
                             var input_r1 = '<input type="radio" name="optionsEjercicio'+(i+i)+'" id="'+estatus+'" value="'+estatus+'" onclick="RespuestaEvaluacion(this)">'+json['evaluacion']['respuestas'][i][j]['texto_respuesta'];
-                                                        
+
                             $("#Evaluacion").append(        '<div class="col-md-6">'+
                                                               '<div class="radio">'+
                                                                 '<label id="r'+j+'_ejercicio'+i+'">'+
@@ -453,7 +455,7 @@
                                                     '</div>'+
                                                 '</div>'
                                                 );
-                    
+
 		        }else{
 					//alert("No se ha encontrado datos")
 		        }
@@ -471,14 +473,14 @@
 			//location.href ="principal_usuario.html";
 		}
 	}
-    
+
     function RespuestaEjemplo(elemento){
         //alert("Se seleccionó el radio: "+numero);
         //console.log(typeof(status));
         //console.log($(elemento).val());
         //console.log(""+status);
     }
-    
+
     function RespuestaEjercicio(elemento){
         //alert("Se seleccionó el radio: "+numero);
         //console.log(typeof(status));
@@ -489,7 +491,7 @@
         //console.log(id);
         //console.log(""+status);
     }
-    
+
     function RespuestaEvaluacion(elemento){
         if(calificacion>10){
             calificacion = 10;
@@ -508,7 +510,7 @@
         //console.log(id);
         //console.log(""+status);
     }
-    
+
     function desbloquearEjercicios(){
         $("#a_ejercicios").attr('data-toggle','tab');
         $("#li_ejercicio").removeClass("disabled");
@@ -520,15 +522,15 @@
         $("#li_evaluacion").removeClass("disabled");
         MuestraModal("ATENCION","¡Ahora puedes continuar con las evaluaciones!");
         //alert("¡Ahora puedes continuar con las evaluaciones!");
-        
+
     }
-    
+
     function MuestraModal(titulo,texto){
         $("#titulo_modal").text(titulo);
         $("#texto_modal").text(texto);
         $("#exampleModalAiso").modal();
     }
-    
+
     function finalizarEvaluacion(){
         if(calificacion>10){
             calificacion = 10;
@@ -558,7 +560,7 @@
                     //alert("Informacion almacenada con exito.")
                     MuestraModal("ATENCION","Informacion almacenada con exito.");
                     location.href ="CursosProfesor.html";
-                    
+
 		        }else{
 							alert("Lo sentimos, algo sucedió mal...");
 		          //document.getElementById('texto_tabla').innerHTML = json['error'];

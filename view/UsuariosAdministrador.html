@@ -8,6 +8,8 @@
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="img/favicon.png">
+  <!-- Page level plugin CSS-->
+  <link href="../js/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
   <title>Blank | Creative - Bootstrap 3 Responsive Admin Template</title>
 
@@ -66,7 +68,7 @@
 
       <div class="top-nav notification-row">
         <!-- notificatoin dropdown start-->
-        
+
       </div>
     </header>
     <!--header end-->
@@ -130,8 +132,148 @@
           </div>
         </div>
         <!-- page start-->
-        CONTENIDO DE USUARIOS ADMINISTRADOR
+          <div>
+            <button type="button" data-toggle="modal" onclick="opcionCrear(1)" class="btn btn-success pull-right">Crear Usuario</button>
+          </div>
+              <br>
+              <br>
+
+          <div class="row">
+          <div class="col-lg-12">
+            <section class="panel">
+              <header class="panel-heading">
+              </header>
+              <div class="table-responsive">
+                <table class="table" id="tabla_usuarios">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Tipo de Usuario</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cuerpo_tabla">
+                  </tbody>
+                </table>
+              </div>
+
+            </section>
+          </div>
+        </div>
         <!-- page end-->
+
+          <!-- Modal -->
+            <div class="modal fade" id="modal_crear_usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="tipo_opcion"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5>Dato del usuario:</h5>
+                      <form>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="nombre">Nombre Completo:</label>
+                                <input type="text" class="form-control" id="nombre">
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="nombre">Dirección:</label>
+                                    <input type="text" class="form-control" id="direccion_alumno">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                              <div class="col-md-6">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" class="form-control" id="telefono_alumno">
+                              </div>
+                                <div class="col-md-3">
+                                    <label for="edad">Edad:</label>
+                                    <input type="number" class="form-control" id="edad_alumno" min="0" value="1">
+                                </div>
+                              <div class="col-md-3">
+                                <label for="tipoUsuario">Tipo de Usuario:</label>
+                                <select class="form-control" id="select_usuario">
+                                  <option>Alumno</option>
+                                  <option>Profesor</option>
+                                  <option>Administrador</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="usuario">Nombre del usuario:</label>
+                                    <input type="text" class="form-control" id="id_usuario">
+                                </div>
+                              <div class="col-md-6">
+                                <label for="pass">Contraseña:</label>
+                                <input type="text" class="form-control" id="contrasena">
+                              </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="col-md-6">
+                                    <label for="telTutor1">Tutor 1:</label>
+                                    <input type="text" class="form-control" id="nombre_tutor1">
+                                </div>
+                                  <div class="col-md-6">
+                                    <label for="tutor1">Teléfono:</label>
+                                    <input type="text" class="form-control" id="telefono_tutor1">
+                                  </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="telTutor2">Tutor 2:</label>
+                                    <input type="text" class="form-control" id="nombre_tutor2">
+                                </div>
+                                  <div class="col-md-6">
+                                    <label for="tutor2">Teléfono:</label>
+                                    <input type="text" class="form-control" id="telefono_tutor2">
+                                  </div>
+                            </div>
+
+                          </div>
+                        </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary"  onclick="CrearEditarUsuario()">Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal mensaje error-->
+              <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" align="center">
+                      <h3 id="mensajeError"></h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        <!-- modales -->
+
       </section>
     </section>
     <!--main content end-->
@@ -156,13 +298,360 @@
   <!--custome script for all page-->
   <script src="../js/scripts.js"></script>
   <script src="../js/gestion_cuenta.js"></script>
+    <script src="../js/datatables/jquery.dataTables.js"></script>
+    <script src="../js/datatables/dataTables.bootstrap4.js"></script>
 
 </body>
 
 </html>
 
 <script>
+  var tabla;
+  var opcion;
+  var tmpUser;
+    $( window ).load(function() {
+        traerUsuarios();
+        autollenado();
+    });
+    function autollenado(){
+      $("#nombre").val("Marvin Gabriel Eliosa Abaroa");
+      $("#direccion_alumno").val("Plaza CM9 Edificio C13 Interior 1");
+      $("#telefono_alumno").val("2221924430");
+      $("#edad_alumno").val(24);
+      $("#id_usuario").val("marvineliosa");
+      $("#contrasena").val("contrasena");
+      $("#nombre_tutor1").val("Tutor 1");
+      $("#nombre_tutor2").val("Tutor 2");
+      $("#telefono_tutor1").val("Telefono Tutor 1");
+      $("#telefono_tutor2").val("Telefono Tutor 2");
+    }
+    function limpiarModal(){
+      $("#nombre").val("");
+      $("#direccion_alumno").val("");
+      $("#telefono_alumno").val("");
+      $("#edad_alumno").val(1);
+      $("#id_usuario").val("");
+      $("#contrasena").val("");
+      $("#nombre_tutor1").val("");
+      $("#nombre_tutor2").val("");
+      $("#telefono_tutor1").val("");
+      $("#telefono_tutor2").val("");
+    }
+    function CrearEditarUsuario(){
+      if(opcion==1){
+        CrearUsuario();
+      }else if(opcion==2){
+        editar();
+      }else{
 
-    
-    
+      }
+    }
+    function opcionCrear(opc){
+        opcion =1;
+        $("#tipo_opcion").text("Creación de un usuaio");
+        $("#modal_crear_usuario").modal('show');
+    }
+    function CrearUsuario(){
+        var nombre = $("#nombre").val();
+        var direccion_alumno = $("#direccion_alumno").val();
+        var telefono_alumno = $("#telefono_alumno").val();
+        var edad_alumno = $("#edad_alumno").val();
+        var select_usuario = $("#select_usuario").val();
+        var id_usuario = $("#id_usuario").val();
+        var contrasena = $("#contrasena").val();
+        var nombre_tutor1 = $("#nombre_tutor1").val();
+        var nombre_tutor2 = $("#nombre_tutor2").val();
+        var telefono_tutor1 = $("#telefono_tutor1").val();
+        var telefono_tutor2 = $("#telefono_tutor2").val();
+
+        /*console.log(nombre);
+        console.log(direccion_alumno);
+        console.log(telefono_alumno);
+        console.log(edad_alumno);
+        console.log(select_usuario);
+        console.log(id_usuario);
+        console.log(contrasena);
+        console.log(nombre_tutor1);
+        console.log(nombre_tutor2);
+        console.log(telefono_tutor1);
+        console.log(telefono_tutor2);//*/
+        //*/
+        var dataForm = new FormData();
+        dataForm.append('nombre',nombre);
+        dataForm.append('direccion_alumno',direccion_alumno);
+        dataForm.append('telefono_alumno',telefono_alumno);
+        dataForm.append('edad_alumno',edad_alumno);
+        dataForm.append('select_usuario',select_usuario);
+        dataForm.append('id_usuario',id_usuario);
+        dataForm.append('contrasena',contrasena);
+        dataForm.append('nombre_tutor1',nombre_tutor1);
+        dataForm.append('nombre_tutor2',nombre_tutor2);
+        dataForm.append('telefono_tutor1',telefono_tutor1);
+        dataForm.append('telefono_tutor2',telefono_tutor2);
+        var pagina = "../controller/almacena_usuario.php";
+        $.ajax({
+    		 contentType: false,
+    		 processData: false,
+    		   // la URL para la petición
+    		   url : pagina,
+    		   // la información a enviar
+    		   // (también es posible utilizar una cadena de datos)
+    		   data : dataForm,
+    		   // especifica si será una petición POST o GET
+    		   type : 'POST',
+    		   // el tipo de información que se espera de respuesta
+    		   dataType : 'json',
+    		   // código a ejecutar si la petición es satisfactoria;
+    		   // la respuesta es pasada como argumento a la función
+    		   success : function(json) {
+              if(json['exito'] == true){
+                var row = $("<tr id=curso-'"+id_usuario+"'>");
+                row.append("<td>"+nombre)
+                  .append("</td><td>"+select_usuario)
+                  .append("</td><td>"+"<a href='#' value='"+id_usuario+"' onclick='opcionEditar(this)'>Editar &nbsp;</a>"+
+                          "<a href='#' value='"+id_usuario+"' onclick='elimina(this)'>Eliminar</a>")
+                  .append("</td>")
+                  .append("</tr>");
+                  tabla.row.add(row);
+
+                $("#tabla_usuarios").prepend(row);
+                /*tabla.row.add([
+                  "<tr id=curso-'"+id_usuario+"'>"+
+                      "<td>"+nombre+
+                      "</td><td>"+select_usuario+
+                      "</td><td>"+"Editar Eliminar"+
+                      "</td>"+
+                  "</tr>"
+                ]).draw();//*/
+                /*$("#tabla_usuarios").append(
+                  "<tr id=curso-'"+id_usuario+"'>"+
+                      "<td>"+nombre+
+                      "</td><td>"+select_usuario+
+                      "</td><td>"+"Editar Eliminar"+
+                      "</td>"+
+                  "</tr>"
+                );//*/
+                $("#modal_crear_usuario").modal('toggle');//cerrar modal
+                $("#mensajeError").text("El "+select_usuario+" "+nombre+" se ha creado satisfactoriamente.");
+                $("#modalError").modal('show');//Modal de mensaje de errors
+                limpiarModal();
+              }else{
+                $("#mensajeError").text(json['error']);
+                $("#modalError").modal('show');//Modal de mensaje de errors
+              }
+    		     },
+    		   error : function(xhr, status) {
+             $("#mensajeError").text("Existió un error en el servidor...");
+             $("#modalError").modal('show');//Modal de mensaje de errors
+      			//alert("Existió un error en el servidor...");
+      		          //location.href ="../index.html";
+      		 },
+      		   // código a ejecutar sin importar si la petición falló o no
+      		 complete : function(xhr, status) {
+      		     //alert('Petición realizada');
+      		 }
+      	});//fin de ajax*/
+          //$("#modal_crear_usuario").modal('toggle');//cerrar modal
+    }
+    function opcionEditar(usuario){
+        limpiarModal();
+        tmpUser = $(usuario).attr("value");
+        //console.log("edita "+tmpUser);
+        opcion =2;
+        //editar(tmpUser);
+
+
+        var dataForm = new FormData();
+        dataForm.append('id_usuario',tmpUser);
+        var pagina = "../controller/traer_usuario.php";
+        $.ajax({
+         contentType: false,
+         processData: false,
+           // la URL para la petición
+           url : pagina,
+           // la información a enviar
+           // (también es posible utilizar una cadena de datos)
+           data : dataForm,
+           // especifica si será una petición POST o GET
+           type : 'POST',
+           // el tipo de información que se espera de respuesta
+           dataType : 'json',
+           // código a ejecutar si la petición es satisfactoria;
+           // la respuesta es pasada como argumento a la función
+           success : function(json) {
+              if(json['exito'] == true){
+                  $("#nombre_tutor1").attr('name','limpio');
+                  $("#nombre_tutor2").attr('name','limpio');
+                  $("#nombre").val(json['usuario']['nombre']);
+                  $("#direccion_alumno").val(json['usuario']['direccion']);
+                  $("#telefono_alumno").val(json['usuario']['telefono']);
+                  $("#edad_alumno").val(json['usuario']['edad']);
+                  $("#id_usuario").val(json['login']['usuario']);
+                  $("#contrasena").val(json['login']['contrasena']);
+                  $("#select_usuario").val( ((json['login']['categoria']==1)?"Alumno":(json['login']['categoria']==2)?"Profesor":"Administrador") );
+                  var i=0;
+                  json['tutores'].forEach(function(element) {
+                    var id = "#nombre_tutor"+(i+1);
+                    $(id).val(json['tutores'][i]['nombre']);
+                    $(id).attr("name", json['tutores'][i]['id_tutor']);
+                    var id = "#telefono_tutor"+(i+1);
+                    $(id).val(json['tutores'][i]['telefono']);
+                    i++;
+                  });
+                  $("#tipo_opcion").text("Edición de un usuaio");
+                  $("#modal_crear_usuario").modal('show');
+                /*$("#modal_crear_usuario").modal('toggle');//cerrar modal
+                $("#mensajeError").text("El "+select_usuario+" "+nombre+" se ha creado satisfactoriamente.");
+                $("#modalError").modal('show');//Modal de mensaje de errors
+                limpiarModal();//*/
+              }else{
+                $("#mensajeError").text("Existió un problema al cargar los datos.");
+                $("#modalError").modal('show');//Modal de mensaje de errors
+              }
+             },
+           error : function(xhr, status) {
+             $("#mensajeError").text("Existió un error en el servidor...");
+             $("#modalError").modal('show');//Modal de mensaje de errors
+            //alert("Existió un error en el servidor...");
+                    //location.href ="../index.html";
+           },
+             // código a ejecutar sin importar si la petición falló o no
+           complete : function(xhr, status) {
+               //alert('Petición realizada');
+           }
+        });//fin de ajax*/
+    }
+    function editar(){
+      console.log("edita ");
+      var nombre = $("#nombre").val();
+      var direccion_alumno = $("#direccion_alumno").val();
+      var telefono_alumno = $("#telefono_alumno").val();
+      var edad_alumno = $("#edad_alumno").val();
+      var select_usuario = $("#select_usuario").val();
+      var id_usuario = $("#id_usuario").val();
+      var contrasena = $("#contrasena").val();
+      var nombre_tutor1 = $("#nombre_tutor1").val();
+      var nombre_tutor2 = $("#nombre_tutor2").val();
+      var telefono_tutor1 = $("#telefono_tutor1").val();
+      var telefono_tutor2 = $("#telefono_tutor2").val();
+      var id_tutor1 = $("#nombre_tutor1").attr('name');
+      var id_tutor2 = $("#nombre_tutor2").attr('name');
+
+      var dataForm = new FormData();
+      dataForm.append('nombre',nombre);
+      dataForm.append('direccion_alumno',direccion_alumno);
+      dataForm.append('telefono_alumno',telefono_alumno);
+      dataForm.append('edad_alumno',edad_alumno);
+      dataForm.append('select_usuario',select_usuario);
+      dataForm.append('id_usuario',id_usuario);
+      dataForm.append('contrasena',contrasena);
+      dataForm.append('nombre_tutor1',nombre_tutor1);
+      dataForm.append('nombre_tutor2',nombre_tutor2);
+      dataForm.append('telefono_tutor1',telefono_tutor1);
+      dataForm.append('telefono_tutor2',telefono_tutor2);
+      dataForm.append('id_tutor1',id_tutor1);
+      dataForm.append('id_tutor2',id_tutor2);
+      //dataForm.append('id_usuario',usuario);
+      var pagina = "../controller/edita_usuario.php";
+      $.ajax({
+       contentType: false,
+       processData: false,
+         // la URL para la petición
+         url : pagina,
+         // la información a enviar
+         // (también es posible utilizar una cadena de datos)
+         data : dataForm,
+         // especifica si será una petición POST o GET
+         type : 'POST',
+         // el tipo de información que se espera de respuesta
+         dataType : 'json',
+         // código a ejecutar si la petición es satisfactoria;
+         // la respuesta es pasada como argumento a la función
+         success : function(json) {
+            if(json['exito'] == true){
+
+            }else{
+              $("#mensajeError").text("Existió un problema al almacenar los datos.");
+              $("#modalError").modal('show');//Modal de mensaje de errors
+            }
+           },
+         error : function(xhr, status) {
+           $("#mensajeError").text("Existió un error en el servidor...");
+           $("#modalError").modal('show');//Modal de mensaje de errors
+          //alert("Existió un error en el servidor...");
+                  //location.href ="../index.html";
+         },
+           // código a ejecutar sin importar si la petición falló o no
+         complete : function(xhr, status) {
+             //alert('Petición realizada');
+         }
+      });//fin de ajax*/
+    }
+
+    function elimina(usuario){
+      var tmpUser = $(usuario).attr("value");
+      console.log("elimina "+tmpUser);
+    }
+    function traerUsuarios(){
+        //console.log("Traer Usuaios");
+        var dataForm = new FormData();
+        dataForm.append('user','user');
+        var pagina = "../controller/traer_usuarios.php";
+    		$.ajax({
+    		 contentType: false,
+    		 processData: false,
+    		   // la URL para la petición
+    		   url : pagina,
+    		   // la información a enviar
+    		   // (también es posible utilizar una cadena de datos)
+    		   data : dataForm,
+    		   // especifica si será una petición POST o GET
+    		   type : 'POST',
+    		   // el tipo de información que se espera de respuesta
+    		   dataType : 'json',
+    		   // código a ejecutar si la petición es satisfactoria;
+    		   // la respuesta es pasada como argumento a la función
+    		   success : function(json) {
+    		     for(var i=0;i<json["total"];i++){//recorremos los tramites
+               var usuario = json['usuarios'][i]['usuario'];
+                     $("#tabla_usuarios").append(
+                       "<tr id=curso-'"+usuario+"'>"+
+                           "<td id='td_nombre_"+usuario+"'>"+json["usuarios"][i]["nombre"]+
+                           "</td><td id='td_categoria_"+usuario+"'>"+((json["login"][i]["categoria"] == 1)?"Alumno":((json["login"][i]["categoria"] == 2)?"Profesor":"Administrador"))+
+                           "</td><td>"+"<a href='#' value='"+usuario+"' onclick='opcionEditar(this)'>Editar &nbsp;</a>"+
+                            "<a href='#' value='"+usuario+"' onclick='elimina(this)'>Eliminar</a>"+
+                           "</td>"+
+                       "</tr>"
+                   );
+                }//*/
+               tabla=$("#tabla_usuarios").DataTable({
+                 searching:false,
+                 lengthChange: false,
+                 info:false,
+                 pageLength: 10,
+                 language:{
+                   emptyTable	:	"No hay datos para mostrar en la tabla",
+                   zeroRecords	:	"No hay datos para mostrar en la tabla",
+                   paginate:{
+                     "first":      "Primero",
+                     "last":       "Ultimo",
+                     "next":       "Siguiente",
+                     "previous":   "Anterior"
+                   }
+                 }
+               });//*/
+
+		   },
+		   error : function(xhr, status) {
+			alert("Existió un error en el servidor...");
+		          //location.href ="../index.html";
+		   },
+		   // código a ejecutar sin importar si la petición falló o no
+		   complete : function(xhr, status) {
+		       //alert('Petición realizada');
+		   }
+		 });//*/
+    }
+
+
 </script>
