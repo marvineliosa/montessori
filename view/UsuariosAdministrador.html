@@ -273,6 +273,28 @@
                 </div>
               </div>
         <!-- modales -->
+        <!-- Modal ELIMINAR USUARIO -->
+          <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" align="center">
+                  <h3>¿Esta seguro de querer eliminar este alumno?</h3>
+                  <input type="text" value="" style="display: none" id="input_valor_eliminar"/>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="eliminaUsuario()">Estoy Seguro</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      <!-- modales -->
 
       </section>
     </section>
@@ -348,6 +370,7 @@
     }
     function opcionCrear(opc){
         opcion =1;
+        $("#id_usuario").prop('disabled', false);
         $("#tipo_opcion").text("Creación de un usuaio");
         $("#modal_crear_usuario").modal('show');
     }
@@ -415,22 +438,6 @@
                   tabla.row.add(row);
 
                 $("#tabla_usuarios").prepend(row);
-                /*tabla.row.add([
-                  "<tr id=curso-'"+id_usuario+"'>"+
-                      "<td>"+nombre+
-                      "</td><td>"+select_usuario+
-                      "</td><td>"+"Editar Eliminar"+
-                      "</td>"+
-                  "</tr>"
-                ]).draw();//*/
-                /*$("#tabla_usuarios").append(
-                  "<tr id=curso-'"+id_usuario+"'>"+
-                      "<td>"+nombre+
-                      "</td><td>"+select_usuario+
-                      "</td><td>"+"Editar Eliminar"+
-                      "</td>"+
-                  "</tr>"
-                );//*/
                 $("#modal_crear_usuario").modal('toggle');//cerrar modal
                 $("#mensajeError").text("El "+select_usuario+" "+nombre+" se ha creado satisfactoriamente.");
                 $("#modalError").modal('show');//Modal de mensaje de errors
@@ -459,8 +466,6 @@
         //console.log("edita "+tmpUser);
         opcion =2;
         //editar(tmpUser);
-
-
         var dataForm = new FormData();
         dataForm.append('id_usuario',tmpUser);
         var pagina = "../controller/traer_usuario.php";
@@ -487,6 +492,7 @@
                   $("#telefono_alumno").val(json['usuario']['telefono']);
                   $("#edad_alumno").val(json['usuario']['edad']);
                   $("#id_usuario").val(json['login']['usuario']);
+                  $("#id_usuario").prop('disabled', true);
                   $("#contrasena").val(json['login']['contrasena']);
                   $("#select_usuario").val( ((json['login']['categoria']==1)?"Alumno":(json['login']['categoria']==2)?"Profesor":"Administrador") );
                   var i=0;
@@ -498,6 +504,7 @@
                     $(id).val(json['tutores'][i]['telefono']);
                     i++;
                   });
+
                   $("#tipo_opcion").text("Edición de un usuaio");
                   $("#modal_crear_usuario").modal('show');
                 /*$("#modal_crear_usuario").modal('toggle');//cerrar modal
@@ -569,9 +576,11 @@
          // la respuesta es pasada como argumento a la función
          success : function(json) {
             if(json['exito'] == true){
-
+              $("#modal_crear_usuario").modal('toggle');
+              $("#mensajeError").text("Edición de datos satisfactoria");
+              $("#modalError").modal('show');//Modal de mensaje de errors
             }else{
-              $("#mensajeError").text("Existió un problema al almacenar los datos.");
+              $("#mensajeError").text(json['error']);
               $("#modalError").modal('show');//Modal de mensaje de errors
             }
            },
@@ -588,9 +597,18 @@
       });//fin de ajax*/
     }
 
-    function elimina(usuario){
+    function modalElimina(usuario){
       var tmpUser = $(usuario).attr("value");
-      console.log("elimina "+tmpUser);
+      //alert(tmpUser);
+      $("#input_valor_eliminar").val(tmpUser);
+      //$("#input_valor_eliminar").attr("value",tmpUser);
+      //console.log($("#input_valor_eliminar").val());
+      $("#modalEliminarUsuario").modal();
+    }
+
+    function eliminaUsuario(){
+      var tmpUser = $("#input_valor_eliminar").val();
+      console.log("elimina usuario: "+tmpUser);
       var dataForm = new FormData();
       dataForm.append('id_usuario',tmpUser);
       var pagina = "../controller/eliminar_usuario.php";
@@ -664,7 +682,8 @@
                            "<td id='td_nombre_"+usuario+"'>"+json["usuarios"][i]["nombre"]+
                            "</td><td id='td_categoria_"+usuario+"'>"+((json["login"][i]["categoria"] == 1)?"Alumno":((json["login"][i]["categoria"] == 2)?"Profesor":"Administrador"))+
                            "</td><td>"+"<a href='#' value='"+usuario+"' onclick='opcionEditar(this)'>Editar &nbsp;</a>"+
-                            "<a href='#' value='"+usuario+"' onclick='elimina(this)'>Eliminar</a>"+
+                            "<a href='#' value='"+usuario+"' onclick='modalElimina(this)'>Eliminar</a>"+
+                            //"<a href='#' value='"+usuario+"' onclick='#modalEliminarUsuario'>Eliminar</a>"+
                            "</td>"+
                        "</tr>"
                    );
@@ -673,7 +692,7 @@
                  searching:false,
                  lengthChange: false,
                  info:false,
-                 pageLength: 5,
+                 pageLength: 10,
                  language:{
                    emptyTable	:	"No hay datos para mostrar en la tabla",
                    zeroRecords	:	"No hay datos para mostrar en la tabla",

@@ -133,7 +133,7 @@
         </div>
         <!-- page start-->
         <div>
-          <button type="button" data-toggle="modal" onclick="opcionCrear()" class="btn btn-success pull-right">Crear Grupo</button>
+          <button type="button" data-toggle="modal" onclick="crearGrupo()" class="btn btn-success pull-right">Crear Grupo</button>
         </div>
             <br>
             <br>
@@ -213,6 +213,70 @@
               </div>
             </div>
       <!-- modales -->
+      <!-- Modal -->
+        <div class="modal fade" id="modal_crear_grupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tipo_opcion"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h5>Dato del usuario:</h5>
+                  <form>
+                      <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="nombre">Nombre del Grupo:</label>
+                            <input type="text" class="form-control" id="nombre_grupo" placeholder="Ejemplo: 5to A, Taller 2, Preescolar 1">
+                        </div>
+
+                        <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="telefono">Grado:</label>
+                            <input type="number" class="form-control" id="nivel_grupo" min="1" value="1" placeholder="Ejemplo: 1">
+
+                          </div>
+                            <div class="col-md-6">
+                                <label for="edad">Nivel:</label>
+                                <input type="text" class="form-control" id="grado_grupo" placeholder="Ejemplo: Primaria">
+                            </div>
+                        </div>
+                      </div>
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary"  onclick="guardarGrupo()">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MODALES -->
+        <!-- Modal ELIMINAR USUARIO -->
+          <div class="modal fade" id="modalEliminarGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" align="center">
+                  <h3>¿Esta seguro de querer eliminar este grupo?</h3>
+                  <h3>Los alumnos inscritos a este grupo serán desvinculados.</h3>
+                  <input type="text" value="" style="display: none" id="input_valor_eliminar"/>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="elimina()">Estoy Seguro</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      <!-- modales -->
       </section>
     </section>
     <!--main content end-->
@@ -247,26 +311,9 @@
 <script>
   var tabla_alumnos;
   var grupo;
+  var tabla;
   $( window ).load(function() {
       traeGrupos();
-      //autollenado();
-
-     /*tabla=$("#tabla_alumnos").DataTable({
-       searching:false,
-       lengthChange: false,
-       info:false,
-       pageLength: 5,
-       language:{
-         emptyTable	:	"No hay datos para mostrar en la tabla",
-         zeroRecords	:	"No hay datos para mostrar en la tabla",
-         paginate:{
-           "first":      "Primero",
-           "last":       "Ultimo",
-           "next":       "Siguiente",
-           "previous":   "Anterior"
-         }
-       }
-     });//*/
   });
   function traeGrupos(){
       //console.log("Traer Usuaios");
@@ -316,8 +363,7 @@
                    "previous":   "Anterior"
                  }
                }
-             });//
-
+             });//*/
      },
      error : function(xhr, status) {
        alert("Existió un error en el servidor...");
@@ -332,7 +378,7 @@
 
   function agregarAlumnos(elemento){
     var id_grupo = $(elemento).attr('value');
-    console.log("agregar a grupo: " + id_grupo);
+    //console.log("agregar a grupo: " + id_grupo);
     grupo=id_grupo;
     trae_alumnos();
   }
@@ -453,7 +499,7 @@
     var id_alumno = $(elemento).attr('value');
     //alert(id_usuario);
     var id_grupo = grupo;
-    console.log("DESVINCULAR Alumno "+id_alumno+" con grupo"+id_grupo);
+    //console.log("DESVINCULAR Alumno "+id_alumno+" con grupo"+id_grupo);
     var dataForm = new FormData();
     dataForm.append('id_usuario',id_alumno);
     dataForm.append('id_grupo',id_grupo);
@@ -493,10 +539,121 @@
      });//Fin ajax*/
   }
 
-  function eliminaGrupo(elemento){
-    var id_grupo = $(elemento).attr('value');
-    console.log("eliminar grupo: " + id_grupo);
-    //var id_td = "#"
+  function recargarTablaGrupos(){
+    $("#tabla_grupos").DataTable().destroy();
+    $("#cuerpo_tabla").empty();
+    traeGrupos();
   }
 
+  function eliminaGrupo(elemento){
+    var id_grupo = $(elemento).attr('value');
+    $("#input_valor_eliminar").val(id_grupo);
+    $("#modalEliminarGrupo").modal('show');
+  }
+
+  function elimina(){
+    var id_grupo = $(input_valor_eliminar).val();
+    //console.log("eliminar grupo: " + id_grupo);
+    //var id_td = "#"
+    var dataForm = new FormData();
+    dataForm.append('id_grupo',id_grupo);
+    var pagina = "../controller/eliminar_grupo.php";
+    $.ajax({
+     contentType: false,
+     processData: false,
+       // la URL para la petición
+       url : pagina,
+       // la información a enviar
+       // (también es posible utilizar una cadena de datos)
+       data : dataForm,
+       // especifica si será una petición POST o GET
+       type : 'POST',
+       // el tipo de información que se espera de respuesta
+       dataType : 'json',
+       // código a ejecutar si la petición es satisfactoria;
+       // la respuesta es pasada como argumento a la función
+       success : function(json) {
+          if(json['exito'] == true){
+            $("#mensajeError").text("El grupo ha sido borrado exitosamente");
+            $("#modalError").modal('show');//Modal de mensaje de errors
+            recargarTablaGrupos();
+          }else{
+            $("#mensajeError").text(json['error']);
+            $("#modalError").modal('show');//Modal de mensaje de errors
+          }
+         },
+       error : function(xhr, status) {
+         $("#mensajeError").text("Existió un error en el servidor...");
+         $("#modalError").modal('show');//Modal de mensaje de errors
+        //alert("Existió un error en el servidor...");
+                //location.href ="../index.html";
+       },
+         // código a ejecutar sin importar si la petición falló o no
+       complete : function(xhr, status) {
+           //alert('Petición realizada');
+       }
+    });//fin de ajax*/
+  }
+
+  function crearGrupo(){
+    $("#nombre_grupo").val("Taller ");
+    $("#grado_grupo").val("Primaria");
+    $("#modal_crear_grupo").modal('show');
+  }
+  function guardarGrupo(){
+    var nombre = $("#nombre_grupo").val();
+    var nivel = $("#nivel_grupo").val();
+    var grado= $("#grado_grupo").val();
+    var dataForm = new FormData();
+    dataForm.append('nombre',nombre);
+    dataForm.append('nivel',nivel);
+    dataForm.append('grado',grado);
+    var pagina = "../controller/crear_grupo.php";
+    $.ajax({
+     contentType: false,
+     processData: false,
+       // la URL para la petición
+       url : pagina,
+       // la información a enviar
+       // (también es posible utilizar una cadena de datos)
+       data : dataForm,
+       // especifica si será una petición POST o GET
+       type : 'POST',
+       // el tipo de información que se espera de respuesta
+       dataType : 'json',
+       // código a ejecutar si la petición es satisfactoria;
+       // la respuesta es pasada como argumento a la función
+       success : function(json) {
+          if(json['exito'] == true){
+            var id_grupo = json['id_grupo'];
+            var row = $("<tr id=grupo-'"+id_grupo+"'>");
+            row.append("<td>"+nombre)
+              .append("</td><td>"+grado)
+              .append("</td><td>"+grado)
+              .append("</td><td>"+"<a href='#' value='"+id_grupo+"' onclick='agregarAlumnos(this)'>Agregar Alumnos</a>&nbsp;/&nbsp;"+
+               "<a href='#' value='"+id_grupo+"' onclick='eliminaGrupo(this)'>Eliminar Grupo</a>")
+              .append("</td>")
+              .append("</tr>");
+              tabla.row.add(row);
+              $("#tabla_grupos").prepend(row);
+              $("#mensajeError").text("Grupo creado con exito.");
+              $("#modalError").modal('show');//Modal de mensaje de errors
+              $("#modal_crear_grupo").modal('toggle');
+          }else{
+            $("#mensajeError").text(json['error']);
+            $("#modalError").modal('show');//Modal de mensaje de errors
+          }
+         },
+       error : function(xhr, status) {
+         $("#mensajeError").text("Existió un error en el servidor...");
+         $("#modalError").modal('show');//Modal de mensaje de errors
+        //alert("Existió un error en el servidor...");
+                //location.href ="../index.html";
+       },
+         // código a ejecutar sin importar si la petición falló o no
+       complete : function(xhr, status) {
+           //alert('Petición realizada');
+       }
+    });//fin de ajax*/
+  }
 </script>

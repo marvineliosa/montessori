@@ -15,71 +15,61 @@
   $id_tutor2 = $_REQUEST['id_tutor2'];
 
   //variables de ayuda
-  $fl = true;
+  $fl = false;
   $error = "";
-  $query_insert = "";
-
-
-  /*
-  $query_verifica = "select * from usuario where usuario = '$id_usuario'";
-  $existe_usuario = $mysqli->query($query_verifica);
-  $existe_usuario = mysqli_fetch_array($existe_usuario);
-  if(!$existe_usuario){//si el usuario no existe
-    $tipo = 0;
-    if(strcmp($select_usuario,"Alumno")==0){
-      $tipo = 1;
-    }else if(strcmp($select_usuario,"Profesor")==0){
-      $tipo = 2;
-    }else if(strcmp($select_usuario,"Administrador")==0){
-      $tipo = 3;
-    }else{
-      $tipo = -1;
-      $error = "Los datos han sido corrompidos...";
-    }
-    if($tipo != -1){
-      $query_insert = "insert into usuario(usuario,nombre,edad,telefono,direccion) values('$id_usuario','$nombre',$edad_alumno,'$telefono_alumno','$direccion_alumno')";
-      $exito_insert = $mysqli->query($query_insert);
-      if($exito_insert){
-        $query_insert2 = "insert into login(usuario,contrasena,categoria)values('$id_usuario','$contrasena',$tipo)";
-        $exito_insert2 = $mysqli->query($query_insert2);
-        if($exito_insert2){
-          $fl = true;
-        }else{
-          $error = "Error al almacenar el usuario";
-        }
+  $query_update_usuario = "update usuario set nombre='$nombre', edad='$edad_alumno', telefono='$telefono_alumno', direccion='$direccion_alumno' where usuario = '$id_usuario'";
+  $exito_update_usuario = $mysqli->query($query_update_usuario);
+  if($exito_update_usuario){
+    $query_update_login = "update login set contrasena='$contrasena' where usuario = '$id_usuario'";
+    $exito_update_login = $mysqli->query($query_update_login);
+    if($exito_update_login){
+      if(strcmp($id_tutor1,"limpio")!=0){
+          $query_tutor1 = "update tutor set nombre='$nombre_tutor1', telefono='$telefono_tutor1' where id_tutor='$id_tutor1'";
+          $exito_update_tutor = $mysqli->query($query_tutor1);
       }else{
-        $erro = "Error al almacenar los datos del alumno";
+        if(strcmp($nombre_tutor1,"")!=0){
+          $query_insert = "insert into tutor(nombre,telefono) values('$nombre_tutor1','$telefono_tutor1')";
+          $exito_insert = $mysqli->query($query_insert);
+          $id_tutor1 = $mysqli->insert_id;
+          if($exito_insert){
+            //creamos las relaciones entre tutor y alumno
+            $query_insert = "insert into rel_alumno_tutor(id_usuario,id_tutor) values('$id_usuario',$id_tutor1)";
+            $exito_insert = $mysqli->query($query_insert);
+          }
+        }
       }
-    }
-    //agregamos a los tutores
-    //tutor 1
-    if(strcmp($nombre_tutor1,"")!=0){
-      $query_insert = "insert into tutor(nombre,telefono) values('$nombre_tutor1','$telefono_tutor1')";
-      $exito_insert = $mysqli->query($query_insert);
-      $id_tutor1 = $mysqli->insert_id;
-      if($exito_insert){
-        //creamos las relaciones entre tutor y alumno
-        $query_insert = "insert into rel_alumno_tutor(id_usuario,id_tutor) values('$id_usuario',$id_tutor1)";
-        $exito_insert = $mysqli->query($query_insert);
+      if(strcmp($id_tutor2,"limpio")!=0){
+        $query_tutor2 = "update tutor set nombre='$nombre_tutor2', telefono='$telefono_tutor2' where id_tutor='$id_tutor2'";
+        $exito_update_tutor = $mysqli->query($query_tutor2);
+      }else{
+        if(strcmp($nombre_tutor2,"")!=0){
+          $query_insert = "insert into tutor(nombre,telefono) values('$nombre_tutor2','$telefono_tutor2')";
+          $exito_insert = $mysqli->query($query_insert);
+          $id_tutor2 = $mysqli->insert_id;
+          if($exito_insert){
+            //creamos las relaciones entre tutor y alumno
+            $query_insert = "insert into rel_alumno_tutor(id_usuario,id_tutor) values('$id_usuario',$id_tutor2)";
+            $exito_insert = $mysqli->query($query_insert);
+          }
+        }
       }
-    }
-    if(strcmp($nombre_tutor2,"")!=0){
-      $query_insert = "insert into tutor(nombre,telefono) values('$nombre_tutor2','$telefono_tutor2')";
-      $exito_insert = $mysqli->query($query_insert);
-      $id_tutor2 = $mysqli->insert_id;
-      if($exito_insert){
-        //creamos las relaciones entre tutor y alumno
-        $query_insert = "insert into rel_alumno_tutor(id_usuario,id_tutor) values('$id_usuario',$id_tutor2)";
-        $exito_insert = $mysqli->query($query_insert);
-      }
+      $fl = true;
+    }else{
+      $error = "Error al editar los datos del sesión";
     }
   }else{
-    $error = "El usuario ya existe en el sistema.";
+    $error = "Error al editar los datos del alumno";
   }
-  //*/
+
+
+
+
+
+
+
   $data = array(
     "exito" => $fl,
-    //"query" => $query_verifica,
+    //"query" => $query_tutor1,
     "error" => $error
   );
 
