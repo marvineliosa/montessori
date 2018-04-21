@@ -1,6 +1,6 @@
 <?php
   $developer=true;
-  if(!$developer){
+  if(!$developer){//en caso de que sea datos de servidor
     $servidor = "localhost";
     $usuario = "marvin";
     $clave = "marvinpass";

@@ -591,7 +591,52 @@
     function elimina(usuario){
       var tmpUser = $(usuario).attr("value");
       console.log("elimina "+tmpUser);
+      var dataForm = new FormData();
+      dataForm.append('id_usuario',tmpUser);
+      var pagina = "../controller/eliminar_usuario.php";
+      $.ajax({
+       contentType: false,
+       processData: false,
+         // la URL para la petición
+         url : pagina,
+         // la información a enviar
+         // (también es posible utilizar una cadena de datos)
+         data : dataForm,
+         // especifica si será una petición POST o GET
+         type : 'POST',
+         // el tipo de información que se espera de respuesta
+         dataType : 'json',
+         // código a ejecutar si la petición es satisfactoria;
+         // la respuesta es pasada como argumento a la función
+         success : function(json) {
+           if(json['exito']==true){
+             var id_tr = "#curso-"+tmpUser;
+             $(id_tr).remove();
+             recargarTabla();
+             //tabla.ajax.reload();
+             //tabla.row( $(id_tr).parents('tr') ).remove().draw();
+           }else{
+             $("#mensajeError").text(json['error']);
+             $("#modalError").modal('show');//Modal de mensaje de errors
+           }
+         },
+         error : function(xhr, status) {
+           alert("Existió un error en el servidor...");
+                //location.href ="../index.html";
+         },
+         // código a ejecutar sin importar si la petición falló o no
+         complete : function(xhr, status) {
+             //alert('Petición realizada');
+         }
+       });//Fin ajax*/
     }
+
+    function recargarTabla(){
+      $("#tabla_usuarios").DataTable().destroy();
+       $("#cuerpo_tabla").empty();
+      traerUsuarios();
+    }
+
     function traerUsuarios(){
         //console.log("Traer Usuaios");
         var dataForm = new FormData();
@@ -615,7 +660,7 @@
     		     for(var i=0;i<json["total"];i++){//recorremos los tramites
                var usuario = json['usuarios'][i]['usuario'];
                      $("#tabla_usuarios").append(
-                       "<tr id=curso-'"+usuario+"'>"+
+                       "<tr id='curso-"+usuario+"'>"+
                            "<td id='td_nombre_"+usuario+"'>"+json["usuarios"][i]["nombre"]+
                            "</td><td id='td_categoria_"+usuario+"'>"+((json["login"][i]["categoria"] == 1)?"Alumno":((json["login"][i]["categoria"] == 2)?"Profesor":"Administrador"))+
                            "</td><td>"+"<a href='#' value='"+usuario+"' onclick='opcionEditar(this)'>Editar &nbsp;</a>"+
@@ -628,7 +673,7 @@
                  searching:false,
                  lengthChange: false,
                  info:false,
-                 pageLength: 10,
+                 pageLength: 5,
                  language:{
                    emptyTable	:	"No hay datos para mostrar en la tabla",
                    zeroRecords	:	"No hay datos para mostrar en la tabla",
