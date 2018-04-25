@@ -185,6 +185,28 @@
               </div>
             </div>
         <!-- modales -->
+        <!-- page end-->
+          <!-- Modal -->
+          <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" align="center">
+                  <h3 id="mensajeError"></h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirige()">Aceptar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- modales -->
+
       </section>
     </section>
     <!--main content end-->
@@ -347,6 +369,9 @@
         $("#input_valor").val(id);
         $("#exampleModal").modal();
     }
+    function redirige(){
+      location.reload(true);;
+    }
     function elimina(){
         var id = $("#input_valor").val();
         var dataForm = new FormData();
@@ -368,10 +393,14 @@
 			      // la respuesta es pasada como argumento a la función
 			      success : function(json) {
                       //console.log(json);
-                      location.reload(true);
+                      //location.reload(true);
+                      $("#mensajeError").text("El cuso se ha eliminado correctamente");
+                      $("#modalError").modal('show');//Modal de mensaje de errors
 			      },
 			      error : function(xhr, status) {
-							alert("Existió un error en el servidor...");
+							//alert("Existió un error en el servidor...");
+              $("#mensajeError").text("Existió un error en el servidor...");
+              $("#modalError").modal('show');//Modal de mensaje de errors
 			      },
 			      // código a ejecutar sin importar si la petición falló o no
 			      complete : function(xhr, status) {

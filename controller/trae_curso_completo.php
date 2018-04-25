@@ -45,7 +45,7 @@
         $query_ejemplo = "select * from pregunta_ejemplo where id_pregunta_ejemplo = $id_ejemplo";
         $info_ejemplo = consulta($query_ejemplo,$mysqli);
         //sacando respuestas del ejemplo
-        $query_relacion="select * from rel_ejemplos_respuestas where id_pregunta_ejemplo=$id_ejemplo";
+        $query_relacion="select * from rel_ejemplos_respuestas where id_pregunta_ejemplo=$id_ejemplo ORDER BY Rand()";
         foreach ($mysqli->query($query_relacion) as $result) {
             $id_respuesta = $result['id_respuesta_ejemplo'];
             $query_relacion="select * from respuesta_ejemplo where id_respuesta_ejemplo=$id_respuesta";
@@ -70,7 +70,7 @@
             'respuestas' => $respuestas,
             'imagen' => $imagen_ejemplo
         );
-        
+
         //obtenemos ejercicios
         $query_relacion="select * from rel_curso_ejercicio where id_curso = $id_curso";
         foreach ($mysqli->query($query_relacion) as $result) {
@@ -80,7 +80,7 @@
             $id_pregunta = $pregunta['id_pregunta_ejercicio'];
             if($pregunta){
                 $pregunta_ejercicios[]=$pregunta;//aqui se adjunta la pregunta al arreglo de ejercicios y se busca las respuestas
-                $query_relacion="select * from rel_ejercicios_respuestas where id_pregunta_ejercicio = $id_pregunta";
+                $query_relacion="select * from rel_ejercicios_respuestas where id_pregunta_ejercicio = $id_pregunta  ORDER BY Rand()";
                 foreach ($mysqli->query($query_relacion) as $result2) {
                     $id_respuesta = $result2['id_respuesta_ejercicio'];
                     $query_relacion="select * from respuesta_ejercicio where id_respuesta_ejercicio=$id_respuesta";
@@ -98,16 +98,16 @@
                     $imagenes_ejercicios[]=$imagen_ej;
                 }
             }//*/
-            
+
         }
-        
+
         $ejercicios = array(
             'preguntas' => $pregunta_ejercicios,
             'respuestas' => $respuesta_ejercicios,
             'imagenes' => $imagenes_ejercicios
         );
-        
-        
+
+
         //obtenemos ejercicios
         $query_relacion="select * from rel_curso_evaluacion where id_curso = $id_curso";
         foreach ($mysqli->query($query_relacion) as $result) {
@@ -117,7 +117,7 @@
             $id_pregunta = $pregunta['id_pregunta_evaluacion'];
             if($pregunta){
                 $pregunta_evaluacion[]=$pregunta;//aqui se adjunta la pregunta al arreglo de evaluaciones y se busca las respuestas
-                $query_relacion="select * from rel_evaluacion_respuestas where id_pregunta_evaluacion = $id_pregunta";
+                $query_relacion="select * from rel_evaluacion_respuestas where id_pregunta_evaluacion = $id_pregunta  ORDER BY Rand()";
                 foreach ($mysqli->query($query_relacion) as $result2) {
                     $id_respuesta = $result2['id_respuesta_evaluacion'];
                     $query_relacion="select * from respuesta_evaluacion where id_respuesta_evaluacion=$id_respuesta";
@@ -141,7 +141,7 @@
                 'imagenes' => $imagenes_evaluacion
             );
         }
-        
+
     }else{
         $fl=false;
     }

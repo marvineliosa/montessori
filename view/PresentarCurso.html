@@ -144,7 +144,7 @@
                     <a  class="nav-link" href="#Ejercicios" id="a_ejercicios">Ejercicios</a>
                   </li>
                   <li class="nav-item disabled" id="li_evaluacion">
-                    <a  class="nav-link" href="#Evaluacion" id="a_evaluacion">Evaluación</a>
+                    <a  data-toggle="tab" class="nav-link" href="#Evaluacion" id="a_evaluacion">Evaluación</a>
                   </li>
                 </ul>
               </header>
@@ -287,12 +287,16 @@
 </html>
 
 <script>
-    var calificacion = 10;
+    var calificacion = 0;
     $( window ).load(function() {
         //alert("epale");
         obtenCurso();
         //$("#a_evaluacion").click();
     });
+    function cambiarUrlVideo(url){
+        url=url.replace('watch?v=', 'embed/');
+        return url;
+    }
 
     function obtenCurso(){
         id_curso=parseInt(vars['curso']);
@@ -324,9 +328,12 @@
                         //$("#video_curso").html('<iframe width="660" height="415" src="'+json['video']['url']+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
                         //$("#video_curso").html('<h1>aqui va un video... si tuviera uno!</h1>');
                     }else if(json['video']){
-                        $("#video_curso").html('<h1>aqui va la imagen</h1>');
+                      //alert("Tiene Video");
+                      var url_video = cambiarUrlVideo(json['video']['url']);
+                      $("#video_curso").html('<iframe width="660" height="415" src="'+url_video+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>');
+//                        $("#video_curso").html('<h1>aqui va la imagen</h1>');
                     }else{
-                      
+
                     }
                     $("#objetivo_curso").text(json['curso']['objetivo']);
                     $("#descripcion_curso").text(json['curso']['descripcion']);
@@ -430,7 +437,7 @@
                         for(var j=0; j<4; j++){
                             var estatus = json['evaluacion']['respuestas'][i][j]['estatus'];
                             //var retroalimentacion = json['evaluacion']['respuestas'][i][j]['retroalimentacion'];
-                            var input_r1 = '<input type="radio" name="optionsEjercicio'+(i+i)+'" id="'+estatus+'" value="'+estatus+'" onclick="RespuestaEvaluacion(this)">'+json['evaluacion']['respuestas'][i][j]['texto_respuesta'];
+                            var input_r1 = '<input type="radio" name="optionsEjercicio'+(i+i)+'" id="'+estatus+'" value="'+i+'" onclick="RespuestaEvaluacion(this)">'+json['evaluacion']['respuestas'][i][j]['texto_respuesta'];
 
                             $("#Evaluacion").append(        '<div class="col-md-6">'+
                                                               '<div class="radio">'+
@@ -491,26 +498,32 @@
         //console.log(id);
         //console.log(""+status);
     }
-
+    var respuestas = ["","","","",""];
     function RespuestaEvaluacion(elemento){
-        if(calificacion>10){
-            calificacion = 10;
-        }
-        var valor = $(elemento).val();
-        //alert("Se seleccionó el radio: "+numero);
-        //console.log(typeof(status));
-        console.log($(elemento).val());
-        //var retroalimentacion = $(elemento).attr("id");
-        //alert($(elemento).val());
-        if(valor == "incorrecta" && calificacion < 10){
-            calificacion = calificacion - 2;
-        }else{
-            calificacion = calificacion + 2;
-        }
+        var pos = parseInt($(elemento).attr('value'));
+        var estatus = $(elemento).attr('id');
+        //alert(estatus);
+        //alert(pos);
+        //alert(typeof(pos));
+        respuestas[pos] = estatus;
+        /*for(var i=0;i<5;i++){
+          console.log("Respuesta: "+respuestas[i]);
+        }//*/
+        //alert(respuestas[pos]);
+
         //console.log(id);
         //console.log(""+status);
     }
-
+    function ValidaRespuestas(){
+      calificacion = 0;
+      for(var i=0;i<5;i++){
+        //console.log("Respuesta: "+respuestas[i]);
+        if(respuestas[i]=='correcta'){
+          calificacion=calificacion+2;
+        }
+      }//*/
+      console.log("Calificacion: "+calificacion);
+    }
     function desbloquearEjercicios(){
         $("#a_ejercicios").attr('data-toggle','tab');
         $("#li_ejercicio").removeClass("disabled");
@@ -532,9 +545,7 @@
     }
 
     function finalizarEvaluacion(){
-        if(calificacion>10){
-            calificacion = 10;
-        }
+        ValidaRespuestas();
         id_curso=parseInt(vars['curso']);
         var dataForm = new FormData();
 		  dataForm.append('calificacion',calificacion);
