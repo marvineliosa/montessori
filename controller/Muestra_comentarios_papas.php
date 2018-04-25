@@ -4,6 +4,7 @@ $alumno= $_REQUEST['user'];
 $id_alumno = array();
 $comentarios = array();
 $materias= array();
+$id_profesor=null;
 $query_comentarios="select id_comentario from rel_comentario_alumno where id_alumno='$alumno'";
 foreach($mysqli->query($query_comentarios) as $id_comen){
     foreach($id_comen as $id_c){
@@ -18,9 +19,9 @@ foreach($mysqli->query($query_comentarios) as $id_comen){
                 $query_inf_materia="select nombre_materia from materia where id_materia='$id'";
                 foreach($mysqli->query($query_inf_materia) as $mat){
                     $materias[]=$mat;
-                } 
+                }
             }
-            
+
         }
     }
 }
@@ -31,7 +32,7 @@ foreach($mysqli->query($query_id_prof) as $id_prof){
         $query_inf_prof="select nombre from usuario where usuario='$id_p'";
         foreach($mysqli->query($query_inf_prof) as $profesor){
              $id_profesor[]=$profesor;
-        }  
+        }
     }
 }
 
