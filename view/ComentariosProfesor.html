@@ -130,8 +130,81 @@
           </div>
         </div>
         <!-- page start-->
-        CONTENIDO DE COMENTARIOS PROFESOR
+        <!--CONTENIDO DE COMENTARIOS PROFESOR-->
+        <div>
+            <button type="button" data-toggle="modal" onclick="agregarComentario()" class="btn btn-success pull-right">Agregar comentario</button>
+        </div>
+        <br>
+        <br>
+        <div class="panel panel-default col-lg-12" id="comentarios">
+        </div>
         <!-- page end-->
+        
+        <!-- Modal 1-->
+            <div class="modal fade" id="modal_agrega_comentario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" >Agregar Comentario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h5>LLena los campos:</h5>
+                      <form>
+                          <!--<div class="row">-->
+                            <div class="form-group col-md-12">
+                              <!--<div class="col-md-5">-->
+                                <label for="telefono">Grupo:</label>
+                                 <select class="form-control" id="grupos" onchange="carga_materias(value);"></select>
+                             <!-- </div> -->
+                            </div>
+                            <div class="form-group col-md-12">
+                              <!--<div class="col-md-6">-->
+                                <label for="edad">Materia:</label>
+                                <select class="form-control" id="materias" onchange=""></select>
+                              <!--</div>-->
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="nombre">Alumno:</label>
+                                <select class="form-control" id="alumnos" onchange=""></select>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="usuario">Comentario:</label>
+                                    <textarea class="form-control" rows="3" id="comentario" required></textarea>
+                                </div>
+                            </div>
+                          <!--</div>-->
+                        </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary"  onclick="GuardaComentario()">Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <!-- fin modal 1-->
+          <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ATENCION</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" align="center">
+                      <h3 id="mensajeError"></h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
       </section>
     </section>
     <!--main content end-->
@@ -162,7 +235,215 @@
 </html>
 
 <script>
+    var usuario="";
+    $( window ).load(function() {
+        obtenerUsuario();
+    });
+    
+    $grupo=null;
+    $materias=null;
+    $alumnos=null;
+    var usuario=null;
+    function obtenerUsuario(){
+        var dataForm = new FormData();
+		dataForm.append('user','user');
+        var pagina = "../controller/obtener_usuario.php";
+		$.ajax({
+			contentType: false,
+            processData: false,
+			url : pagina,
+			data : dataForm,
+			type : 'POST',
+			dataType : 'json',
+			success : function(json) {
+			if(json['exito']==true){
+              if(json['categoria'].localeCompare("2")!=0){
+                    alert("Sin permisos para esta vista");
+				    location.href ="../index.html";
+               }else{
+                    console.log(usuario);
+                    usuario=json['usuario'];
+                    console.log(usuario);
+                    //categoria=json['categoria'];
+                    //obtenerCursos();
+                    carga_grupos();
+                    MuestraComentarios();
+                    }
+			 }else{
+				  location.href ="../index.html";
+				 }
+			 },
+            error : function(xhr, status) {
+				alert("Existió un error en el servidor...");
+				//location.href ="../index.html";
+			 },
+			 complete : function(xhr, status) {
+			     //alert('Petición realizada');
+			 }
+        });
+    }
+    
+    function MuestraComentarios(){
+        var dataForm = new FormData();
+        $us=usuario;
+        dataForm.append('user',$us);
+        var pagina = "../controller/MuestraComentarios.php";
+        $.ajax({
+            contentType: false,
+            processData: false,
+            url: pagina,
+            data: dataForm,
+            type : 'POST',
+    		dataType : 'json',
+            success: function (json){
+                $comentarios=json['comentarios'];
+                $materias=json['materias'];
+                $alumnos=json['alumnos'];
+                $.each($comentarios, function(i, item){
+                    $("#comentarios").append(
+                       "<br>"+
+                       "<div class='panel-heading'><p class='text-center'><span class='pull-left'>"+$materias[i].nombre_materia+"</span>"+$alumnos[i].nombre+"<span class='pull-right'>"+item.fecha_creacion+"</span></p></div>"+
+                       "<div class='panel-body'>"+
+                       item.descripcion +
+                       "</div>"
+                   );
+                });
+            },
+            error : function(xhr, status) {
+			alert("Existió un error en el servidor...");
+		          //location.href ="../index.html";
+		   },
+		   complete : function(xhr, status) {
+		       //alert('Petición realizada');
+		   } 
+        });
+    }
+    
+    function carga_grupos(){
+        var dataForm = new FormData();
+        
+        dataForm.append('user',usuario);
+        dataForm.append('grupo','-1');
+        var pagina = "../controller/Completa_select.php";
+        $.ajax({
+            contentType: false,
+            processData: false,
+            url: pagina,
+            data: dataForm,
+            type : 'POST',
+    		dataType : 'json',
+            success: function (json){
+                $grupos=json['grupos'];
+                document.getElementById("grupos").innerHTML += "<option value='-1'>Seleccione</option>";
+                $.each($grupos, function(i, item){
+                    document.getElementById("grupos").innerHTML += "<option value='"+item.id_grupo+"'>"+item.nombre_grupo+"</option>";
+                });
+            },
+            error : function(xhr, status) {
+			alert("Existió un error en el servidor...");
+		          //location.href ="../index.html";
+		   },
+		   complete : function(xhr, status) {
+		       //alert('Petición realizada');
+		   } 
+        });
+    }
+    
+    function agregarComentario(){
+        document.getElementById("materias").innerHTML = "";
+        document.getElementById("alumnos").innerHTML = "";
+        //document.getElementById("grupos").innerHTML = "";
+       $("#comentario").val('');
+        $("#modal_agrega_comentario").modal('show');
+    }
+    
+    function carga_materias($grup){
+        document.getElementById("materias").innerHTML = "";
+        document.getElementById("alumnos").innerHTML = "";
+        if($grup!= -1){
+           var dataForm = new FormData();
+            dataForm.append('grupo',$grup);
+            dataForm.append('user','profesor');
+            var pagina = "../controller/Completa_select.php";
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: pagina,
+                data: dataForm,
+                type : 'POST',
+                dataType : 'json',
+                success: function (json){
+                    $materias=json['materias'];
+                    $alumnos=json['alumnos'];
+                    $.each($materias, function(i, item){
+                        document.getElementById("materias").innerHTML += "<option value='"+item.id_materia+"'>"+item.nombre_materia+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ciclo escolar: "+item.ciclo_escolar+"</option>";
+                    });
+                    $.each($alumnos, function(i, item){
+                        document.getElementById("alumnos").innerHTML += "<option value='"+item.usuario+"'>"+item.nombre+"</option>";
+                    });
+                },
+                error : function(xhr, status) {
+                alert("Existió un error en el servidor...");
+                },
+                complete : function(xhr, status) {
+                   //alert('Petición realizada');
+                }
+            }); 
+        }else{
+            $("#mensajeError").text("Seleccione una opción valida.");
+            $("#modalError").modal('show');  
+        }
+        
+        
+    }
+    
+    
+    
+    function GuardaComentario(){
+        $id_prof=usuario;
+        $id_alumno=$("#alumnos").val();
+        $id_materia=$("#materias").val();
+        $descripcion=$("#comentario").val();
+        if($id_alumno==null || $id_materia==null || $descripcion ==""){
+            $("#mensajeError").text("Favor de no dejar campos vacios.");
+            $("#modalError").modal('show');
+        }else{
+            var dataForm = new FormData();
+            dataForm.append('user',$id_prof);
+            dataForm.append('alumno',$id_alumno);
+            dataForm.append('materia',$id_materia);
+            dataForm.append('descripcion',$descripcion);
+            var pagina = "../controller/guarda_comentario.php";
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: pagina,
+                data: dataForm,
+                type : 'POST',
+                dataType : 'json',
+                success: function (json){
+                    $exito=json['exito'];
+                    $error=json['error'];
+                    if($exito){
+                        $("#modal_agrega_comentario").modal('toggle');
+                        $("#mensajeError").text("El comentario se ha creado satisfactoriamente.");
+                        $("#modalError").modal('show');
+                        setTimeout("location.href='../view/ComentariosProfesor.html'", 2000);
+                    }else{
+                        $("#mensajeError").text("No se pudo guardar el comentario.");
+                        $("#modalError").modal('show');
+                    }
 
-    
-    
+                },
+                error : function(xhr, status) {
+                alert("Existió un error en el servidor...");
+                      //location.href ="../index.html";
+               },
+               complete : function(xhr, status) {
+                   //alert('Petición realizada');
+               } 
+            });
+        }
+        
+    }
 </script>
